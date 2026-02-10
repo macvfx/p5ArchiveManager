@@ -85,11 +85,12 @@ After a successful check confirms that **100% of files are archived**, you can d
 - CHANGED in 2.8 -- Added P5 volume ID and location fields for each volume (i.e. tape) in output csv
 - FIXED in 2.7 -- Show log file in Output files section from the start of checking
 - CHANGED in 2.6 -- Configure a P5 Archive Index or use the default Default-Archive option
+- *FIXED* in 2.6 (Issue only for 2.5 and below) -- Now checks files in the specified Archive index.
 - FIXED in 2.4 -- Adding a new server would not show up until you left that section. Thanks to David Fox!
 - CHANGED in 2.4 -- Text file of un-archived items or the csv of archived files no longer auto-open. Also thanks David.
 - CHANGED in 2.4 -- minimum macOS is now 14.6 (this was required by a swift change to fix the server add bug)
 
 ## Known Issues
 - KNOWN ISSUE -- UI window size needs to be manually re-sized occassionally depending on output files in the list 
-- KNOWN ISSUE -- *FIXED* in 2.6 (Issue only for 2.5 and below) -- Only checks files in the Default Archive index.
+
 
