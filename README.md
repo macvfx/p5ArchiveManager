@@ -1,7 +1,7 @@
 # P5 Archive Manager (app)
 Check a remote (or local) P5 server to see if a folder is archived with drag and drop ease. Check any custom archive index or the default. Delete diles with confidence. 
 
-Note: to check local only servers and the Default-Index you can see the early version of [P5 Archive Check repo] (https://github.com/macvfx/p5ArchiveCheck)
+Note: to check local only servers and the Default-Index you can see the early version of [P5 Archive Check repo](https://github.com/macvfx/p5ArchiveCheck)
 
 ![P5ArchiveManager-UI](https://github.com/user-attachments/assets/55d39389-f5ae-4026-8579-b1b1cfab8fab)
 
