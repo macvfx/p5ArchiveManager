@@ -78,10 +78,10 @@ After a successful check confirms that **100% of files are archived**, you can d
 
 ### P5 Archive Manager 
 
-**Added** in v3.1 **Import Servers JSON** and **Export Servers JSON** buttons in the Manage Servers panel footer.
-**Added** in v3.1 **Auto-detection of `P5Servers.json`** at launch from `/Users/Shared/` and `~/Documents/`.
+  - **Added** in v3.1 **Import Servers JSON** and **Export Servers JSON** buttons in the Manage Servers panel footer.
+  - **Added** in v3.1 **Auto-detection of `P5Servers.json`** at launch from `/Users/Shared/` and `~/Documents/`.
   
-- **CHANGED** in 3.0 -- **File deletion option** if all files checked are archived.
+  - **CHANGED** in 3.0 -- **File deletion option** if all files checked are archived.
 
   - FIXED in 2.9 - **Detailed progress messages** -- The app UI now reflects each individual step from the archive check script instead of showing a vague "Gathering metadata" message. Progress updates now show specific steps:
   - "Checking archive status..." with file count progress
