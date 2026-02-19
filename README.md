@@ -75,8 +75,15 @@ After a successful check confirms that **100% of files are archived**, you can d
 - Full Disk Access for `nsd` binary in /usr/local/aw/bin
 
 ## Changelog
-- CHANGED in 3.0 -- File deletion option if all files checked are archived.
-- FIXED in 2.9 - **Detailed progress messages** -- The app UI now reflects each individual step from the archive check script instead of showing a vague "Gathering metadata" message. Progress updates now show specific steps:
+
+### P5 Archive Manager 
+
+**Added** in v3.1 **Import Servers JSON** and **Export Servers JSON** buttons in the Manage Servers panel footer.
+**Added** in v3.1 **Auto-detection of `P5Servers.json`** at launch from `/Users/Shared/` and `~/Documents/`.
+  
+- **CHANGED** in 3.0 -- **File deletion option** if all files checked are archived.
+
+  - FIXED in 2.9 - **Detailed progress messages** -- The app UI now reflects each individual step from the archive check script instead of showing a vague "Gathering metadata" message. Progress updates now show specific steps:
   - "Checking archive status..." with file count progress
   - "All files archived!" or "Some files not archived" result
   - "Gathering file details..." with sub-steps: fetching archive status, file sizes, converting sizes to GB, fetching backup timestamps, converting timestamps
