@@ -103,4 +103,5 @@ After a successful check confirms that **100% of files are archived**, you can d
 ## Known Issues
 - KNOWN ISSUE -- UI window size needs to be manually re-sized occassionally depending on output files in the list 
 
-
+## 2026 code.matx.ca - P5 Archive Tools for macOS & iOS
+[For feedback, reach out via GitHub](https://github.com/macvfx) and [Support this project by optional donation](https://www.paypal.com/ncp/payment/ZX52VNS49SRZA)
