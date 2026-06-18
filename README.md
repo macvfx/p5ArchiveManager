@@ -21,6 +21,32 @@ P5 Archive Manager comes in two builds:
 
 > ⚠️ **The v0.4 API build is a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
 
+### What's new in the v0.4 API beta
+
+Same job as the shipping app — confirm what's archived in P5, delete the proven-archived, **and** archive the rest — rebuilt on the **Archiware P5 REST API v8** instead of the `nsdchat` CLI bridge. Full details in the **[API Beta — User Guide](docs/API-BETA-GUIDE.md)**.
+
+**What changed from nsdchat**
+
+- **Transport:** P5 REST API over HTTP (via `curl`) instead of shelling out to `nsdchat` per call — fewer moving parts, no `nsdchat` dependency.
+- **Faster checks:** local-driven and batched — enumerates the disk folder and queries only the P5 directories that hold those files, rather than per-file lookups.
+- **Multi-server & multi-index:** manage several P5 servers (per-server Keychain); optionally search every archive index, not just one.
+
+**What's new (the API makes possible)**
+
+- **Per-file proof** — disk size/date vs P5 size/archive-date/volume/barcode/location/media-type, with an `exact` / `close` / `mismatch` / `not-archived` verdict per file.
+- **Proof before delete** — a CSV+TXT report is written *before* anything is removed; deletes only verified files, re-checks each just before removal, saves a receipt (+ optional NAS mirror & audit log).
+- **Archive the not-archived** — submit straight to a P5 plan/client and monitor the job.
+- **Session logging (new in 0.4)** — every API call, archive job step and error is written to a per-launch log. **Verbose logging is on by default**, so if anything misbehaves (e.g. an archive that doesn't archive) the log already captures the submit request, P5's raw response, the job ID and each status poll. Use **Receipts, audit & logs ▸ Zip logs to Desktop** to bundle it into a single `.zip` and send it in — no passwords are ever logged. Turn verbose off in **Settings ▸ Diagnostics** if logs get large.
+- **One-shot actions + auto re-check**, plus onboarding (welcome guide, in-app Help/About).
+
+**What to test**
+
+- Run the **same folders** through both apps and compare: archived vs not-archived counts should agree.
+- The **full chain** on a throwaway folder: check → proof report → delete → receipt; confirm the receipt is accurate and P5 still holds the files.
+- An **archive submit** on a disposable plan; confirm the job runs and a re-check shows the files archived.
+- **Multi-index** on a file in a non-default index; **size-mismatch** handling on a re-saved `.drp`/`.drt`.
+- **Logging:** after an archive, **Zip logs to Desktop** and confirm the log shows the submit, response, job ID and poll states.
+
 ![P5ArchiveManager-UI](https://github.com/user-attachments/assets/55d39389-f5ae-4026-8579-b1b1cfab8fab)
 
 
