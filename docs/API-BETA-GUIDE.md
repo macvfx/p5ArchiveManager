@@ -1,6 +1,6 @@
 # P5 Archive Manager — API Beta · User Guide
 
-**v0.3 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
+**v0.4 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). This is the REST-API rewrite of the shipping P5 Archive Manager; the
 stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.md).
 
@@ -145,11 +145,15 @@ receipt.**
 - **Size verification** with exact/close/mismatch verdicts; symlink detection.
 - **Per-file provenance** list (the delete proof) — incl. volume location, media type, index.
 - **P5 Volumes / Barcodes** pills, populated live; **persistent volume→barcode cache**.
+- **Proof report (CSV + TXT)** — written before any delete and on demand.
 - **Delete with receipt** (guarded, re-verified, audited); **one-shot + auto re-check**.
 - **Deep verify** full list with on-disk highlight.
 - **Browse** the archive index + **raw JSON** viewer (diagnostics).
 - **Server info**: clients & plans (with names), volume-cache size + Clear.
 - Local **check history**.
+- **Session logs & diagnostics** — every API call, archive job step and error is written
+  to a per-launch log; verbose on by default (Settings ▸ Diagnostics). *Receipts, audit &
+  logs ▸ Zip logs to Desktop* bundles them for support (see **§6 Troubleshooting**).
 
 ---
 
@@ -163,6 +167,9 @@ Please exercise these and report back (issues / what worked):
   confirm the receipt is accurate and P5 still holds the files.
 - **Archive submit on a disposable plan** — the **first live write**, still unproven;
   confirm the job runs and a re-check shows the files archived.
+- **Logs capture the archive** — after an archive (especially one that misbehaves),
+  **Zip logs to Desktop** and confirm the `session-*.log` shows the submit, raw response,
+  job ID and poll states (see **§6**).
 - **Edge cases** — multi-index (a file in a non-default index); size-mismatch handling on
   a re-saved `.drp`/`.drt`; symlinks.
 
@@ -179,9 +186,35 @@ Known caveats:
 
 ---
 
-## 6. Where things live
+## 6. Troubleshooting — sending logs
+
+If something doesn't work — most commonly **"I archived files but nothing happened"** —
+the app keeps a detailed log you can send for diagnosis.
+
+1. **Reproduce the problem** (e.g. select the plan + client and run the archive again).
+2. **Receipts, audit & logs ▸ Zip logs to Desktop.** This bundles the session logs into
+   `P5ArchiveManager-logs-<date>.zip` on your Desktop and reveals it in Finder.
+3. **Email the zip** to support.
+
+What's in the log:
+
+- Every P5 API call and any network/curl error.
+- The full archive sequence: the submit request, P5's raw response, the **job ID**, each
+  status poll, and the final result — including a clear line if no job was created (the
+  usual cause of "it didn't archive").
+- No passwords are ever written to the log.
+
+**Verbose logging is on by default** (Settings ▸ Diagnostics), so the first report already
+has full detail. If logs get large during big **Deep verify** scans you can turn verbose
+off there — archive activity and errors are still always logged. *Reveal logs* opens the
+folder if you'd rather attach files yourself.
+
+---
+
+## 7. Where things live
 
 - Receipts: `~/Library/Application Support/P5ArchiveManagerAPI/Receipts/`
+- Session logs: `~/Library/Application Support/P5ArchiveManagerAPI/Logs/` (one `session-*.log` per launch)
 - Volume cache / history: `~/Library/Application Support/P5ArchiveManagerAPI/`
 - Live Archiware P5 REST API docs: https://blog.archiware.com/redoc/p5_rest_api/awp5api.html
 
