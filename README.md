@@ -7,12 +7,28 @@ Use with caution, if you choose to delete files that are identified as archived 
 
 Note: to check local only servers and the Default-Index you can see the early version of [P5 Archive Check repo](https://github.com/macvfx/p5ArchiveCheck)
 
+## Editions
+
+P5 Archive Manager comes in two builds:
+
+| Edition | Version | Engine | Status |
+|---|---|---|---|
+| **Shipping** | **v3.7 build 2** | `nsdchat` (Archiware CLI) | **Stable** — recommended for everyday use |
+| **API beta** | **v0.3** (preview of the upcoming **v4**) | Archiware P5 **REST API** | **Beta — ready for testing** |
+
+- **v3.7 build 2 — shipping (nsdchat).** The current, stable app documented on this page. It talks to P5 through the `nsdchat` CLI and is the build to use for real work.
+- **v0.3 — API beta (future v4).** A rewrite onto the Archiware P5 **REST API** (no `nsdchat` dependency): faster local-driven checks, optional multi-index search, per-file disk-vs-P5 proof, and a proof-first delete that writes a receipt before anything is removed. **Ready for beta testing** → **[API Beta — User Guide](docs/API-BETA-GUIDE.md)**.
+
+> ⚠️ **The v0.3 API build is a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
+
 ![P5ArchiveManager-UI](https://github.com/user-attachments/assets/55d39389-f5ae-4026-8579-b1b1cfab8fab)
 
 
 ![macOS](https://img.shields.io/badge/macOS-14.0+-blue) ![Swift](https://img.shields.io/badge/Swift-5.9-orange) ![License](https://img.shields.io/badge/License-MIT-green)
 
-## Features
+## Features — shipping app (v3.7 build 2, nsdchat)
+
+> Looking for the REST-API build? See the **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** (v0.3, preview of v4).
 
 - **Drag & drop** any folder to check if its files are archived on P5
 - **Multiple server support** -- configure and switch between P5 servers
