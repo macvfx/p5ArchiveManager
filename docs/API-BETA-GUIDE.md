@@ -1,6 +1,6 @@
 # P5 Archive Manager — API Beta · User Guide
 
-**v0.4 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
+**v0.5 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). This is the REST-API rewrite of the shipping P5 Archive Manager; the
 stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.md).
 
@@ -112,6 +112,10 @@ receipt.**
 - When a check finds not-archived files, an **Archive** panel appears.
 - **Load archive plans & clients**, pick a **Plan** + **Client**, then **Archive N files…**
 - Submits them to P5 and monitors the job briefly.
+- **Named job + manifest (v0.5):** the job is submitted with the **full source folder path**
+  as its title, so it appears in the **P5 job monitor** as the folder (not a generic "REST
+  Archive job"). The accepted files (`path → P5 handle`) are recorded in the saved
+  `archive-…-job.log` receipt as an **ARCHIVED ENTRIES** manifest.
 - **Plan `deletefiles` flag:** plans configured to delete sources after archiving are
   marked **"⚠ deletes source"** in the picker, with a warning on selection and in the
   confirm dialog. Such a plan archives **and deletes the source P5-side, without the
@@ -151,6 +155,9 @@ receipt.**
 - **Browse** the archive index + **raw JSON** viewer (diagnostics).
 - **Server info**: clients & plans (with names), volume-cache size + Clear.
 - Local **check history**.
+- **Named archive jobs + manifest (v0.5)** — archive jobs carry the source folder path as
+  their title (shown in the P5 job monitor); accepted files (`path → P5 handle`) saved to
+  the archive receipt.
 - **Session logs & diagnostics** — every API call, archive job step and error is written
   to a per-launch log; verbose on by default (Settings ▸ Diagnostics). *Receipts, audit &
   logs ▸ Zip logs to Desktop* bundles them for support (see **§6 Troubleshooting**).
@@ -167,6 +174,9 @@ Please exercise these and report back (issues / what worked):
   confirm the receipt is accurate and P5 still holds the files.
 - **Archive submit on a disposable plan** — the **first live write**, still unproven;
   confirm the job runs and a re-check shows the files archived.
+- **Job title + manifest (v0.5)** — after an archive, confirm the **P5 job monitor shows
+  the source folder path** (not "REST Archive job"), and the saved `archive-…-job.log`
+  lists each `path → handle`.
 - **Logs capture the archive** — after an archive (especially one that misbehaves),
   **Zip logs to Desktop** and confirm the `session-*.log` shows the submit, raw response,
   job ID and poll states (see **§6**).
