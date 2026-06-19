@@ -1,6 +1,6 @@
 # P5 Archive Manager — API Beta · User Guide
 
-**v0.6 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
+**v0.6.1 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). This is the REST-API rewrite of the shipping P5 Archive Manager; the
 stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.md).
 
@@ -159,7 +159,8 @@ receipt.**
   their title (shown in the P5 job monitor); accepted files (`path → P5 handle`) saved to
   the archive receipt.
 - **Special-character filenames (v0.6)** — files whose name contains a backslash (P5 stores
-  it as `^5c`) are correctly recognised as archived, not falsely "not archived".
+  it as `^5c`) are correctly recognised as archived, not falsely "not archived". *(v0.6.1:
+  the Browse inspector can also navigate into backslash folders.)*
 - **Session logs & diagnostics** — every API call, archive job step and error is written
   to a per-launch log; verbose on by default (Settings ▸ Diagnostics). *Receipts, audit &
   logs ▸ Zip logs to Desktop* bundles them for support (see **§6 Troubleshooting**).
