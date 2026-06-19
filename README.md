@@ -17,7 +17,7 @@ P5 Archive Manager comes in two builds:
 | **API beta** | **v0.6.4** (preview of the upcoming **v4**) | Archiware P5 **REST API** | **Beta — ready for testing** |
 
 - **v3.7 build 2 — shipping (nsdchat).** The current, stable app documented on this page. It talks to P5 through the `nsdchat` CLI and is the build to use for real work.
-- **v0.6.4 — API beta (future v4).** A rewrite onto the Archiware P5 **REST API** (no `nsdchat` dependency): faster local-driven checks, optional multi-index search, per-file disk-vs-P5 proof, a proof-first delete that writes a receipt before anything is removed, and **per-session diagnostic logs you can zip and send** if anything misbehaves. **Ready for beta testing** → **[API Beta — User Guide](docs/API-BETA-GUIDE.md)**.
+- **v0.6.4 — API beta (future v4).** A rewrite onto the Archiware P5 **REST API** (no `nsdchat` dependency): faster local-driven checks, optional multi-index search, per-file disk-vs-P5 proof, a proof-first delete that writes a receipt before anything is removed, and **per-session diagnostic logs you can zip and send** if anything misbehaves. **Ready for beta testing** → **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** · **[Release notes](docs/API-BETA-RELEASE-NOTES.md)**.
 
 > ⚠️ **The v0.6.4 API build is a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
 

@@ -1,0 +1,69 @@
+# P5 Archive Manager — API Beta v0.6.4
+
+The REST-API rewrite of P5 Archive Manager (preview of the upcoming **v4**). Talks to the
+**Archiware P5 REST API v8** — no `nsdchat` dependency. Same job as the shipping app:
+confirm what's archived in P5, delete the proven-archived files, and archive the rest.
+
+> ⚠️ **Beta — test only.** Back up your data first. **Delete and Archive are real,
+> destructive actions**, and the Archive-to-P5 write is still unproven against live
+> servers. Provided **as-is, with no warranty**. Test on disposable data and verify the
+> receipts before trusting it with real projects.
+
+---
+
+## ✨ Features
+
+- **Fast disk-vs-P5 check** — drop a folder; it enumerates the files on disk and queries
+  only the P5 directories that hold them. Per-file verdict: `exact` / `close` (±64 KB) /
+  `size mismatch` / `not archived`.
+- **Per-file proof** — disk size & date vs P5 size, archive date, volume, barcode,
+  location, media type, and the matching index.
+- **Proof-first delete with receipt** — a CSV + TXT proof report is written **before**
+  anything is removed; only verified files are deleted, each re-checked immediately before
+  removal, and a receipt (+ optional NAS mirror & running audit log) is saved.
+- **Archive the not-archived** — submit straight to a P5 plan/client and monitor the job.
+- **Named archive jobs + manifest** *(0.5)* — submissions carry the **full source folder
+  path** as the job title, so the P5 **job monitor shows the folder** (not a generic
+  "REST Archive job"). Accepted files (`path → P5 handle`) are logged and saved to the
+  archive receipt.
+- **Session logging** *(0.4)* — every API call, archive job step and error is written to a
+  per-launch log. **Verbose logging is on by default**, so a failed archive is already
+  captured (request, raw response, job ID, poll states). **Receipts, audit & logs ▸ Zip
+  logs to Desktop** bundles it into one `.zip` to send in — no passwords are ever logged.
+- **Multi-server & multi-index** — manage several P5 servers (per-server Keychain
+  password); optionally **Search all archive indexes** so a file is found wherever it lives.
+- **Deep verify** — full recursive walk of everything P5 holds under a path, with your
+  on-disk files highlighted.
+- **Browse + raw JSON**, **clients/plans** (named), **check history**, one-shot actions
+  with auto re-check, welcome guide, in-app Help/About.
+- **Settings gear** *(0.6.2)* in the main window, field guidance via hover tooltips
+  *(0.6.4)*.
+
+## 🐛 Fixes
+
+- **Backslash (and special-character) filenames** *(0.6)* — files with a `\` in the name
+  (which P5 stores internally as `^5c`) were wrongly reported **"not archived"** even
+  though they were on tape. The check now decodes P5's `^XX` encoding when matching, so
+  they're correctly recognised. P5-side decode only, guarded by the size check.
+  *Verified against a live server.*
+- **Browse into backslash folders** *(0.6.1)* — the Browse inspector can now navigate into
+  folders whose names contain a backslash. (Diagnostics-only; the main workflow was
+  unaffected.)
+- **Clearer empty results** *(0.6.3)* — when a check matches **0 files**, an inline hint
+  explains the check is **disk-driven** and points to **Deep verify** / **Browse** to see
+  what P5 holds. Prevents mistaking "files deleted locally" for "P5 lost them".
+- **Surfaced the index-search toggle** *(0.6.2)* — **"Search all archive indexes"** now
+  has its own clearly-labelled **Archive index search** section in Settings (was buried in
+  the server form). Turn it on if your files live in a non-default index.
+
+## 🔎 Good to know when testing
+
+- **The check is disk-driven.** It compares files **on disk** to P5. A folder with no (or
+  already-deleted) local files shows **0 archived** even though P5 still has them — use
+  **Deep verify** or **Browse** to see the P5 side.
+- **Non-default index?** Turn on **Settings ▸ Archive index search ▸ Search all archive
+  indexes**, then re-check.
+- **Hit a problem?** Reproduce it, then **Receipts, audit & logs ▸ Zip logs to Desktop**
+  and send the `.zip`.
+
+**Full user guide:** [`API-BETA-GUIDE.md`](API-BETA-GUIDE.md)
