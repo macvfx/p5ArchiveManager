@@ -1,6 +1,6 @@
 # P5 Archive Manager — API Beta · User Guide
 
-**v0.5 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
+**v0.6 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). This is the REST-API rewrite of the shipping P5 Archive Manager; the
 stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.md).
 
@@ -158,6 +158,8 @@ receipt.**
 - **Named archive jobs + manifest (v0.5)** — archive jobs carry the source folder path as
   their title (shown in the P5 job monitor); accepted files (`path → P5 handle`) saved to
   the archive receipt.
+- **Special-character filenames (v0.6)** — files whose name contains a backslash (P5 stores
+  it as `^5c`) are correctly recognised as archived, not falsely "not archived".
 - **Session logs & diagnostics** — every API call, archive job step and error is written
   to a per-launch log; verbose on by default (Settings ▸ Diagnostics). *Receipts, audit &
   logs ▸ Zip logs to Desktop* bundles them for support (see **§6 Troubleshooting**).
@@ -177,6 +179,8 @@ Please exercise these and report back (issues / what worked):
 - **Job title + manifest (v0.5)** — after an archive, confirm the **P5 job monitor shows
   the source folder path** (not "REST Archive job"), and the saved `archive-…-job.log`
   lists each `path → handle`.
+- **Special-character filenames (v0.6)** — archive files with a **backslash in the name**,
+  then Check; they should report **archived** (not falsely "not archived").
 - **Logs capture the archive** — after an archive (especially one that misbehaves),
   **Zip logs to Desktop** and confirm the `session-*.log` shows the submit, raw response,
   job ID and poll states (see **§6**).

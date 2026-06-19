@@ -14,14 +14,14 @@ P5 Archive Manager comes in two builds:
 | Edition | Version | Engine | Status |
 |---|---|---|---|
 | **Shipping** | **v3.7 build 2** | `nsdchat` (Archiware CLI) | **Stable** — recommended for everyday use |
-| **API beta** | **v0.5** (preview of the upcoming **v4**) | Archiware P5 **REST API** | **Beta — ready for testing** |
+| **API beta** | **v0.6** (preview of the upcoming **v4**) | Archiware P5 **REST API** | **Beta — ready for testing** |
 
 - **v3.7 build 2 — shipping (nsdchat).** The current, stable app documented on this page. It talks to P5 through the `nsdchat` CLI and is the build to use for real work.
-- **v0.5 — API beta (future v4).** A rewrite onto the Archiware P5 **REST API** (no `nsdchat` dependency): faster local-driven checks, optional multi-index search, per-file disk-vs-P5 proof, a proof-first delete that writes a receipt before anything is removed, and **per-session diagnostic logs you can zip and send** if anything misbehaves. **Ready for beta testing** → **[API Beta — User Guide](docs/API-BETA-GUIDE.md)**.
+- **v0.6 — API beta (future v4).** A rewrite onto the Archiware P5 **REST API** (no `nsdchat` dependency): faster local-driven checks, optional multi-index search, per-file disk-vs-P5 proof, a proof-first delete that writes a receipt before anything is removed, and **per-session diagnostic logs you can zip and send** if anything misbehaves. **Ready for beta testing** → **[API Beta — User Guide](docs/API-BETA-GUIDE.md)**.
 
-> ⚠️ **The v0.5 API build is a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
+> ⚠️ **The v0.6 API build is a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
 
-### What’s new in the v0.5 API beta
+### What’s new in the v0.6 API beta
 
 Same job as the shipping app — confirm what's archived in P5, delete the proven-archived, **and** archive the rest — rebuilt on the **Archiware P5 REST API v8** instead of the `nsdchat` CLI bridge. Full details in the **[API Beta — User Guide](docs/API-BETA-GUIDE.md)**.
 
@@ -37,6 +37,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 - **Proof before delete** — a CSV+TXT report is written *before* anything is removed; deletes only verified files, re-checks each just before removal, saves a receipt (+ optional NAS mirror & audit log).
 - **Archive the not-archived** — submit straight to a P5 plan/client and monitor the job.
 - **Named archive jobs + manifest (new in 0.5)** — archive submissions now carry the **full source folder path** as the job title, so the P5 **job monitor shows the folder** instead of a generic "REST Archive job". The accepted files (`path → P5 handle`) are also logged and saved to the archive receipt as a durable record of what was archived.
+- **Special-character filenames fixed (new in 0.6)** — files with a **backslash in the name** (which P5 stores internally as `^5c`) are now correctly recognised as archived instead of being wrongly reported as "not archived". Verified against a live server.
 - **Session logging (new in 0.4)** — every API call, archive job step and error is written to a per-launch log. **Verbose logging is on by default**, so if anything misbehaves (e.g. an archive that doesn't archive) the log already captures the submit request, P5's raw response, the job ID and each status poll. Use **Receipts, audit & logs ▸ Zip logs to Desktop** to bundle it into a single `.zip` and send it in — no passwords are ever logged. Turn verbose off in **Settings ▸ Diagnostics** if logs get large.
 - **One-shot actions + auto re-check**, plus onboarding (welcome guide, in-app Help/About).
 
@@ -46,6 +47,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 - The **full chain** on a throwaway folder: check → proof report → delete → receipt; confirm the receipt is accurate and P5 still holds the files.
 - An **archive submit** on a disposable plan; confirm the job runs and a re-check shows the files archived. Then check the **P5 job monitor shows the folder path** (not "REST Archive job"), and the saved archive receipt lists each `path → handle`.
 - **Multi-index** on a file in a non-default index; **size-mismatch** handling on a re-saved `.drp`/`.drt`.
+- **Special characters:** archive files that have a **backslash in the name**, then Check — they should show **archived** (not falsely "not archived").
 - **Logging:** after an archive, **Zip logs to Desktop** and confirm the log shows the submit, response, job ID and poll states.
 
 ![P5ArchiveManager-UI](https://github.com/user-attachments/assets/55d39389-f5ae-4026-8579-b1b1cfab8fab)
