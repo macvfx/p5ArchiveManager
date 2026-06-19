@@ -1,6 +1,6 @@
 # P5 Archive Manager — API Beta · User Guide
 
-**v0.6.1 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
+**v0.6.4 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). This is the REST-API rewrite of the shipping P5 Archive Manager; the
 stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.md).
 
@@ -30,7 +30,8 @@ delete is defensible.
 
 ## 2. First-time setup
 
-Servers are managed in **Settings** (the **⌘,** window), so you can keep several P5
+Servers are managed in **Settings** (the **⌘,** window, or the **⚙️ gear** at the top-right
+of the main window), so you can keep several P5
 servers and switch between them.
 
 1. Open **Settings** (⌘,) → **P5 Servers**. Use **Add** for a new server, then enter:
@@ -38,8 +39,8 @@ servers and switch between them.
    - **Username**, **Index** (e.g. `Default-Archive`)
    - **Password** → **Save** (stored in your Keychain, **per server**)
 2. Click **Test Connection** → expect ✅.
-3. (Optional) Toggle **Search all archive indexes** if a file might live in any index,
-   not just the one named above.
+3. (Optional) In the **Archive index search** section, toggle **Search all archive
+   indexes** if a file might live in any index, not just the one named above.
 
 Back on the main window, the compact **server picker** at the top selects which server
 the check runs against; the status line shows `user@host · index` (and `· no password` /
@@ -64,6 +65,14 @@ them — so a folder with a few files left checks in a moment, even if the archi
 the whole project history.
 
 ### Read the result
+
+> **The check is disk-driven.** It compares the files **on disk** to P5, so the counts are
+> always about your local files. A folder with no local files (e.g. they were already
+> deleted) shows **0 archived** even though P5 still has them on tape — there's just
+> nothing on disk to compare. To see what P5 holds at a path regardless of local files,
+> use **Deep verify** (below) or **Browse** the index. *(v0.6.3 shows an inline hint when a
+> check matches 0 files, pointing you to these tools.)*
+
 - **Total files / Archived / Size** — for the files on disk.
 - **Not archived / Needs archiving** — on disk but not in P5.
 - **P5 Volumes / P5 Barcodes** (right-hand pills) — the tapes the files live on; volumes
@@ -182,6 +191,13 @@ Please exercise these and report back (issues / what worked):
   lists each `path → handle`.
 - **Special-character filenames (v0.6)** — archive files with a **backslash in the name**,
   then Check; they should report **archived** (not falsely "not archived").
+- **Disk-driven check (don't be surprised by "0 archived")** — check a folder whose files
+  are **still on disk**. If you check a folder whose files were already deleted, it
+  correctly shows 0 (nothing on disk to compare) and points you to **Deep verify**. That's
+  expected, not a bug.
+- **Non-default index** — if your files live in an index other than the server's
+  configured one, turn on **Settings ▸ Archive index search ▸ Search all archive indexes**,
+  then re-check.
 - **Logs capture the archive** — after an archive (especially one that misbehaves),
   **Zip logs to Desktop** and confirm the `session-*.log` shows the submit, raw response,
   job ID and poll states (see **§6**).
