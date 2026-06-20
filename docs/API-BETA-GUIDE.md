@@ -152,7 +152,7 @@ receipt.**
 - Fast **local-driven** disk-vs-P5 check (queries only relevant directories).
 - **Multi-index search** (optional) — find a file in whichever archive index holds it.
 - Live counters; steady result box.
-- **Case auto-correction** (`BC CANCER` → `BC Cancer`); suggests siblings when a path
+- **Case auto-correction** (`TEST IN PROD` → `Test in Prod`); suggests siblings when a path
   segment isn't found. (The index root isn't listable — start paths from `Volumes`/`mnt`.)
 - Drop = auto-scan + replaces typed path; typing = manual scan + clears the drop.
 - **Size verification** with exact/close/mismatch verdicts; symlink detection.
