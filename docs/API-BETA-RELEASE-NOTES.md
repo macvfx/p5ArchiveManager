@@ -1,4 +1,4 @@
-# P5 Archive Manager — API Beta v0.6.4
+# P5 Archive Manager — API Beta v0.7
 
 The REST-API rewrite of P5 Archive Manager (preview of the upcoming **v4**). Talks to the
 **Archiware P5 REST API v8** — no `nsdchat` dependency. Same job as the shipping app:
@@ -8,6 +8,21 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 > destructive actions**, and the Archive-to-P5 write is still unproven against live
 > servers. Provided **as-is, with no warranty**. Test on disposable data and verify the
 > receipts before trusting it with real projects.
+
+---
+
+## 🆕 New in v0.7 — source-path tagging
+
+When the app archives a file, it now records that file's **full original path** in the P5
+index's per-file **`description`** metadata. So every file archived through the app stays
+**traceable to where it came from**: you can search the archive index by source path and
+the origin is visible directly on the entry — independent of the job log.
+
+Why it matters: P5's Archive Overview does not attribute REST-created archive jobs to a
+plan, so this is how the app keeps archived files auditable by their source. It's **on by
+default** (Settings ▸ Archiving), and only applied when the plan's index has a `description`
+key (a P5 default), so it never interferes with archiving. Turn it off if you'd rather the
+app not write metadata into your index.
 
 ---
 
@@ -22,6 +37,9 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
   anything is removed; only verified files are deleted, each re-checked immediately before
   removal, and a receipt (+ optional NAS mirror & running audit log) is saved.
 - **Archive the not-archived** — submit straight to a P5 plan/client and monitor the job.
+- **Source-path tagging** *(new in 0.7)* — each archived file records its full original path
+  in the index's per-file `description` metadata, so the archive is searchable by source
+  path (ON by default; guarded so it never blocks archiving).
 - **Named archive jobs + manifest** *(0.5)* — submissions carry the **full source folder
   path** as the job title, so the P5 **job monitor shows the folder** (not a generic
   "REST Archive job"). Accepted files (`path → P5 handle`) are logged and saved to the

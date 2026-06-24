@@ -1,6 +1,6 @@
 # P5 Archive Manager — API Beta · User Guide
 
-**v0.6.4 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
+**v0.7 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). This is the REST-API rewrite of the shipping P5 Archive Manager; the
 stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.md).
 
@@ -125,6 +125,11 @@ receipt.**
   as its title, so it appears in the **P5 job monitor** as the folder (not a generic "REST
   Archive job"). The accepted files (`path → P5 handle`) are recorded in the saved
   `archive-…-job.log` receipt as an **ARCHIVED ENTRIES** manifest.
+- **Source-path tagging (v0.7, Settings ▸ Archiving, ON by default):** each archived file
+  also records its **full original path** in the P5 index's per-file `description` metadata,
+  so the archive is **searchable by source path** and the origin shows on the entry. Only
+  applied when the plan's index has a `description` key (a P5 default), so it never blocks
+  archiving. Turn it off if you don't want the app writing metadata into your index.
 - **Plan `deletefiles` flag:** plans configured to delete sources after archiving are
   marked **"⚠ deletes source"** in the picker, with a warning on selection and in the
   confirm dialog. Such a plan archives **and deletes the source P5-side, without the
@@ -167,6 +172,8 @@ receipt.**
 - **Named archive jobs + manifest (v0.5)** — archive jobs carry the source folder path as
   their title (shown in the P5 job monitor); accepted files (`path → P5 handle`) saved to
   the archive receipt.
+- **Source-path tagging (v0.7)** — each archived file records its full original path in the
+  index's per-file `description` metadata (searchable; ON by default in Settings ▸ Archiving).
 - **Special-character filenames (v0.6)** — files whose name contains a backslash (P5 stores
   it as `^5c`) are correctly recognised as archived, not falsely "not archived". *(v0.6.1:
   the Browse inspector can also navigate into backslash folders.)*
