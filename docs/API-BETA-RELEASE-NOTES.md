@@ -13,6 +13,8 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ## 🆕 New in v0.8 — storage-path mapping
 
+Concise build 13 handoff: **[v0.8 Release Notes](API-BETA-V0.8-RELEASE-NOTES.md)**.
+
 - **Independent roots:** the dropped local folder and archived P5 path can now differ.
   Editing the P5 path no longer clears the local folder.
 - **Per-server prefix mappings:** translate a current local prefix such as
