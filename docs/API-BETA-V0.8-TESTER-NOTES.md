@@ -1,6 +1,6 @@
 # P5 Archive Manager API Beta v0.8 — Phase 1 Tester Notes
 
-Build: **0.8 (12)**  
+Build: **0.8 (13)**
 Focus: **Storage-path mapping and review-before-check**
 
 > ⚠️ **Beta — test only.** Path mapping and checking are read-only, but Delete and
@@ -41,6 +41,17 @@ The editor includes long path fields, in-field examples, validation, and a previ
 Multiple rules are allowed; the longest matching prefix wins. The main window shows the
 applied mapping, identifies manual edits as custom, and offers **Recalculate from dropped
 folder**.
+
+Use the prominent **Save path mappings** button for explicit confirmation. Valid changes
+also save when Settings closes or the selected server changes. Reopening Settings after
+editing a rule must not crash.
+
+### P5 connection status
+
+The main server row reports **Connected** in green (with latency and last-test time),
+**Authentication failed** in orange, **Server unreachable** in red, or **Not tested** in
+gray. **Retest** checks again. Folder checks require a successful result no more than 60
+seconds old; failed connectivity is never treated as archive evidence.
 
 ### Both paths appear in evidence
 
@@ -88,6 +99,15 @@ save, and drop a matching folder.
 
 Expected: the correct P5 path is derived and the main window names the applied rule.
 
+### 4a. Connectivity indicator and preflight
+
+Test a working server, rejected credentials, and an unavailable address. Use **Retest**
+after each change.
+
+Expected: the indicator distinguishes green/orange/red correctly. An unavailable server
+stops a folder check with archive status undetermined and never reports files as “not
+archived.” Restore the working address and confirm the indicator returns to green.
+
 ### 5. No-match fallback
 
 Drop a folder that matches no rule.
@@ -124,7 +144,7 @@ action still targets the real local source path rather than the mapped archive p
 
 Include:
 
-- Version/build `0.8 (12)`
+- Version/build `0.8 (13)`
 - Whether automatic checking was on or off
 - An anonymized current-local prefix and archived-P5 prefix
 - Expected and actual derived P5 paths

@@ -48,8 +48,10 @@ servers and switch between them.
    prefix recorded in this server's P5 index.
 
 Back on the main window, the compact **server picker** at the top selects which server
-the check runs against; the status line shows `user@host · index` (and `· no password` /
-`· all indexes` when relevant). Re-open Settings any time to edit or add servers.
+the check runs against. Its connection row distinguishes **Connected** (green, with
+latency and last-test time), **Authentication failed** (orange), **Server unreachable**
+(red), and **Not tested** (gray). Use **Retest** after changing networks or server
+settings. Re-open Settings any time to edit or add servers.
 
 **Help & welcome guide.** On first launch the main window shows a short welcome panel.
 The **Help** menu has **P5 Archive Manager Help** (⌘?) — getting-started steps and an
@@ -61,6 +63,9 @@ General**). The **About** window (App menu) shows the version.
 ## 3. The main workflow
 
 ### Check a folder
+- Confirm the selected server shows **Connected**. Before checking, the app requires a
+  successful connection result no more than 60 seconds old and automatically retests a
+  stale result. A failed preflight stops without classifying files as not archived.
 - **Drag the folder onto the drop area** → it auto-scans by default (this is the fast
   path and enables the disk-vs-P5 comparison). Turn off **Automatically check after
   dropping a folder** in Settings ▸ General to review the path first.
@@ -179,6 +184,8 @@ receipt.**
 ## 4. Feature list (working)
 
 - **Multi-server** manager in Settings (⌘,); per-server Keychain password; Test Connection.
+- Main-window **P5 connection status** with latency, last-tested time, Retest, distinct
+  authentication/unreachable states, and a required connectivity preflight.
 - Fast **local-driven** disk-vs-P5 check (queries only relevant directories).
 - **Multi-index search** (optional) — find a file in whichever archive index holds it.
 - Live counters; steady result box.

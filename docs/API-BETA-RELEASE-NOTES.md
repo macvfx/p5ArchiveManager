@@ -25,6 +25,18 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 - **Safety preserved:** mapping affects only the P5 lookup. Enumeration, deletion, and
   archive submission still use the real local source path.
 
+### Connection status and safe preflight — build 13
+
+- The main server row shows **Connected**, **Authentication failed**, **Server
+  unreachable**, or **Not tested**, plus response time and last-tested time.
+- **Retest** checks the selected server on demand; server/settings changes trigger a new
+  test automatically.
+- Folder checks require a recent successful connection result. A timeout, rejected
+  login, or invalid P5 response stops the check and cannot become a misleading “not
+  archived” result.
+- Path mappings now save on Settings close/server switch, and reopening Settings after
+  editing a mapping no longer crashes.
+
 Step-by-step validation: **[v0.8 Phase 1 tester notes](API-BETA-V0.8-TESTER-NOTES.md)**.
 
 ---
