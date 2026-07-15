@@ -1,4 +1,4 @@
-# P5 Archive Manager — API Beta v0.7
+# P5 Archive Manager — API Beta v0.8
 
 The REST-API rewrite of P5 Archive Manager (preview of the upcoming **v4**). Talks to the
 **Archiware P5 REST API v8** — no `nsdchat` dependency. Same job as the shipping app:
@@ -11,7 +11,25 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ---
 
-## 🆕 New in v0.7 — source-path tagging
+## 🆕 New in v0.8 — storage-path mapping
+
+- **Independent roots:** the dropped local folder and archived P5 path can now differ.
+  Editing the P5 path no longer clears the local folder.
+- **Per-server prefix mappings:** translate a current local prefix such as
+  `/Volumes/storageA` to an archived P5 prefix such as `Volumes/storageB`. Longest match
+  wins, with path-component boundary protection and an in-Settings preview.
+- **Review before checking:** automatic checking after a drop remains on by default but
+  can be disabled under Settings ▸ General.
+- **Clearer evidence:** History, proof CSV/TXT files, deletion receipts, and diagnostics
+  identify both roots.
+- **Safety preserved:** mapping affects only the P5 lookup. Enumeration, deletion, and
+  archive submission still use the real local source path.
+
+Step-by-step validation: **[v0.8 Phase 1 tester notes](API-BETA-V0.8-TESTER-NOTES.md)**.
+
+---
+
+## New in v0.7 — source-path tagging
 
 When the app archives a file, it now records that file's **full original path** in the P5
 index's per-file **`description`** metadata. So every file archived through the app stays
@@ -31,6 +49,8 @@ app not write metadata into your index.
 - **Fast disk-vs-P5 check** — drop a folder; it enumerates the files on disk and queries
   only the P5 directories that hold them. Per-file verdict: `exact` / `close` (±64 KB) /
   `size mismatch` / `not archived`.
+- **Storage-path mapping** *(new in 0.8)* — compare a current local storage root against
+  the different path stored in P5, with saved mappings per server.
 - **Per-file proof** — disk size & date vs P5 size, archive date, volume, barcode,
   location, media type, and the matching index.
 - **Proof-first delete with receipt** — a CSV + TXT proof report is written **before**

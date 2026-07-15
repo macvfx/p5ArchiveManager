@@ -1,6 +1,6 @@
 # P5 Archive Manager — API Beta · User Guide
 
-**v0.7 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
+**v0.8 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). This is the REST-API rewrite of the shipping P5 Archive Manager; the
 stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.md).
 
@@ -8,6 +8,9 @@ stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.m
 > destructive actions, and the Archive-to-P5 write is still **unproven against live
 > servers**. Provided **as-is, with no warranty of any kind**. Test on disposable data
 > and verify the receipts before trusting it with real projects.
+
+Testers focusing on the new storage workflow should use the
+**[v0.8 Phase 1 tester notes](API-BETA-V0.8-TESTER-NOTES.md)**.
 
 ---
 
@@ -41,6 +44,8 @@ servers and switch between them.
 2. Click **Test Connection** → expect ✅.
 3. (Optional) In the **Archive index search** section, toggle **Search all archive
    indexes** if a file might live in any index, not just the one named above.
+4. (Optional) Under **Path mapping**, add the current local storage prefix and the path
+   prefix recorded in this server's P5 index.
 
 Back on the main window, the compact **server picker** at the top selects which server
 the check runs against; the status line shows `user@host · index` (and `· no password` /
@@ -56,9 +61,29 @@ General**). The **About** window (App menu) shows the version.
 ## 3. The main workflow
 
 ### Check a folder
-- **Drag the folder onto the drop area** → it auto-scans (this is the fast path and
-  enables the disk-vs-P5 comparison).
+- **Drag the folder onto the drop area** → it auto-scans by default (this is the fast
+  path and enables the disk-vs-P5 comparison). Turn off **Automatically check after
+  dropping a folder** in Settings ▸ General to review the path first.
+- **Local folder to inspect** and **Archived P5 path** are independent. Edit the P5 path
+  or use a saved mapping when files have moved to another storage root.
 - Or **type a P5 path** and click **Check Archive Status** (P5-only, no disk compare).
+
+#### Storage path mappings (v0.8)
+
+Mappings belong to the selected P5 server. For example:
+
+```text
+Current local prefix: /Volumes/storageA
+Archived P5 prefix:   Volumes/storageB
+```
+
+Dropping `/Volumes/storageA/Projects/Show01` derives
+`Volumes/storageB/Projects/Show01`. The longest matching rule wins. The main window
+shows the applied rule, and **Recalculate from dropped folder** restores its result after
+a manual edit.
+
+Mapping changes only the P5 lookup. Enumeration, delete safeguards, and archive
+submission continue using the real local folder.
 
 It enumerates the files **on disk** and asks P5 only about the directories that hold
 them — so a folder with a few files left checks in a moment, even if the archive holds
@@ -159,7 +184,10 @@ receipt.**
 - Live counters; steady result box.
 - **Case auto-correction** (`TEST IN PROD` → `Test in Prod`); suggests siblings when a path
   segment isn't found. (The index root isn't listable — start paths from `Volumes`/`mnt`.)
-- Drop = auto-scan + replaces typed path; typing = manual scan + clears the drop.
+- Drop derives the archived P5 path and auto-scans unless disabled; editing the P5 path
+  keeps the local folder connected.
+- **Per-server storage-path mapping (v0.8)** with validation, preview, longest-prefix
+  selection, and explicit local/P5 evidence labels.
 - **Size verification** with exact/close/mismatch verdicts; symlink detection.
 - **Per-file provenance** list (the delete proof) — incl. volume location, media type, index.
 - **P5 Volumes / Barcodes** pills, populated live; **persistent volume→barcode cache**.
@@ -187,6 +215,9 @@ receipt.**
 
 Please exercise these and report back (issues / what worked):
 
+- **v0.8 storage mapping** — use the focused
+  **[Phase 1 checklist](API-BETA-V0.8-TESTER-NOTES.md)** to test review-before-check,
+  manual paths, saved mappings, overlap handling, persistence, and report paths.
 - **Cross-check vs the shipping app** — run the **same folders** through both the v3.7
   nsdchat app and this beta; archived vs not-archived counts should agree.
 - **Full delete chain on a throwaway folder** — check → proof report → delete → receipt;

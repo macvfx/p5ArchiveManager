@@ -14,14 +14,14 @@ P5 Archive Manager comes in two builds:
 | Edition | Version | Engine | Status |
 |---|---|---|---|
 | **Shipping** | **v3.7 build 2** | `nsdchat` (Archiware CLI) | **Stable** — recommended for everyday use |
-| **API beta** | **v0.7** (preview of the upcoming **v4**) | Archiware P5 **REST API** | **Beta — ready for testing** |
+| **API beta** | **v0.8** (preview of the upcoming **v4**) | Archiware P5 **REST API** | **Beta — Phase 1 ready for testing** |
 
 - **v3.7 build 2 — shipping (nsdchat).** The current, stable app documented on this page. It talks to P5 through the `nsdchat` CLI and is the build to use for real work.
-- **v0.7 — API beta (future v4).** A rewrite onto the Archiware P5 **REST API** (no `nsdchat` dependency): faster local-driven checks, optional multi-index search, per-file disk-vs-P5 proof, a proof-first delete that writes a receipt before anything is removed, and **per-session diagnostic logs you can zip and send** if anything misbehaves. **Ready for beta testing** → **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** · **[Release notes](docs/API-BETA-RELEASE-NOTES.md)**. Curious how the REST API itself works? See **[Using the P5 REST API — what we call, and why](docs/P5-REST-API-GUIDE.md)**.
+- **v0.8 — API beta (future v4).** A rewrite onto the Archiware P5 **REST API** (no `nsdchat` dependency): faster local-driven checks, optional multi-index search, per-file disk-vs-P5 proof, proof-first deletion, and new **storage-path mapping** for projects moved between volumes. **Ready for Phase 1 testing** → **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** · **[v0.8 tester notes](docs/API-BETA-V0.8-TESTER-NOTES.md)** · **[Release notes](docs/API-BETA-RELEASE-NOTES.md)**. Curious how the REST API itself works? See **[Using the P5 REST API — what we call, and why](docs/P5-REST-API-GUIDE.md)**.
 
-> ⚠️ **The v0.7 API build is a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
+> ⚠️ **The v0.8 API build is a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
 
-### What’s new in the v0.7 API beta
+### What’s new in the v0.8 API beta
 
 Same job as the shipping app — confirm what's archived in P5, delete the proven-archived, **and** archive the rest — rebuilt on the **Archiware P5 REST API v8** instead of the `nsdchat` CLI bridge. Full details in the **[API Beta — User Guide](docs/API-BETA-GUIDE.md)**.
 
@@ -33,6 +33,9 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 
 **What's new (the API makes possible)**
 
+- **Storage-path mapping (new in 0.8)** — keep the current local folder and archived P5 path independent, and save per-server prefix substitutions for projects moved between storage volumes. Multiple rules are supported; the longest matching prefix wins.
+- **Review before checking (new in 0.8)** — automatic checking after a folder drop can be disabled in Settings so testers can review or edit the derived P5 path first.
+- **Both roots in evidence (new in 0.8)** — History, proof reports, deletion receipts, and diagnostics distinguish the real local folder from the mapped P5 archive path.
 - **Per-file proof** — disk size/date vs P5 size/archive-date/volume/barcode/location/media-type, with an `exact` / `close` / `mismatch` / `not-archived` verdict per file.
 - **Proof before delete** — a CSV+TXT report is written *before* anything is removed; deletes only verified files, re-checks each just before removal, saves a receipt (+ optional NAS mirror & audit log).
 - **Archive the not-archived** — submit straight to a P5 plan/client and monitor the job.
@@ -46,6 +49,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 
 **What to test**
 
+- **v0.8 Phase 1 path mapping:** follow the focused **[tester checklist](docs/API-BETA-V0.8-TESTER-NOTES.md)**, especially review-before-check, current `storageA` → archived `storageB`, per-server persistence, and proof paths.
 - Run the **same folders** through both apps and compare: archived vs not-archived counts should agree.
 - The **full chain** on a throwaway folder: check → proof report → delete → receipt; confirm the receipt is accurate and P5 still holds the files.
 - An **archive submit** on a disposable plan; confirm the job runs and a re-check shows the files archived. Then check the **P5 job monitor shows the folder path** (not "REST Archive job"), and the saved archive receipt lists each `path → handle`.
@@ -61,7 +65,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 
 ## Features — shipping app (v3.7 build 2, nsdchat)
 
-> Looking for the REST-API build? See the **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** (v0.3, preview of v4).
+> Looking for the REST-API build? See the **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** (v0.8, preview of v4).
 
 - **Drag & drop** any folder to check if its files are archived on P5
 - **Multiple server support** -- configure and switch between P5 servers
