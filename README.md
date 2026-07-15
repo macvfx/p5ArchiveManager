@@ -2,6 +2,8 @@
 
 A macOS application that verifies whether files in a selected folder have been archived by Archiware P5, with support for local or remote P5 servers and custom Archive indexes.
 
+Support this project by optional donation](https://www.paypal.com/ncp/payment/MC6DRWQTYG4NY)
+
 # WARNING
 Use with caution, if you choose to delete files that are identified as archived by P5 then you will actually delete files. Use this app only with proper Archiware P5 tape backups or other full backups in place. Only delete files if you are confident you can restore files as needed. We are not responsible for the files you choose to delete. 
 
@@ -177,4 +179,4 @@ The JSON format matches the other P5 utility apps: `{ "servers": [{ "alias", "ho
 - KNOWN ISSUE -- UI window size needs to be manually re-sized occassionally depending on output files in the list 
 
 ## 2026 code.matx.ca - P5 Archive Tools for macOS & iOS
-[For feedback, reach out via GitHub](https://github.com/macvfx) and [Support this project by optional donation](https://www.paypal.com/ncp/payment/ZX52VNS49SRZA)
+[For feedback, reach out via GitHub](https://github.com/macvfx) and [Support this project by optional donation](https://www.paypal.com/ncp/payment/MC6DRWQTYG4NY)
