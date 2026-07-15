@@ -37,10 +37,13 @@ Archived P5 prefix:   Volumes/storageB
 Dropping `/Volumes/storageA/Projects/Show01` then derives
 `Volumes/storageB/Projects/Show01`.
 
-The editor includes long path fields, in-field examples, validation, and a preview.
-Multiple rules are allowed; the longest matching prefix wins. The main window shows the
-applied mapping, identifies manual edits as custom, and offers **Recalculate from dropped
-folder**.
+The editor includes long path fields, in-field examples, validation, and **Preview local
+path**, a temporary, unsaved mapping calculator. Enter a representative full
+current-local path to see the P5 path the draft rules would derive. It is not another
+mapping, does not select or read a real folder, does not contact P5, and does not affect
+main-window checks. Multiple rules are allowed; the longest matching prefix wins. The
+main window shows the applied mapping, identifies manual edits as custom, and offers
+**Recalculate from dropped folder**.
 
 Use the prominent **Save path mappings** button for explicit confirmation. Valid changes
 also save when Settings closes or the selected server changes. Reopening Settings after
@@ -94,10 +97,14 @@ shared relative paths.
 
 ### 4. Saved mapping
 
-Add the real current-local and archived-P5 prefixes in Settings. Confirm the preview,
-save, and drop a matching folder.
+Add the real current-local and archived-P5 prefixes in Settings. Enter a representative
+path in **Preview local path** and confirm the derived P5 path. Change the preview and
+confirm it neither adds a mapping nor starts a P5 request. Save, close and reopen
+Settings, then drop a matching folder.
 
-Expected: the correct P5 path is derived and the main window names the applied rule.
+Expected: the saved mapping persists, the correct P5 path is derived, and the main
+window names the applied rule. The preview value itself is not saved and does not change
+the main-window path or check.
 
 ### 4a. Connectivity indicator and preflight
 

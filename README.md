@@ -33,7 +33,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 
 **What's new (the API makes possible)**
 
-- **Storage-path mapping (new in 0.8)** — keep the current local folder and archived P5 path independent, and save per-server prefix substitutions for projects moved between storage volumes. Multiple rules are supported; the longest matching prefix wins.
+- **Storage-path mapping (new in 0.8)** — keep the current local folder and archived P5 path independent, and save per-server prefix substitutions for projects moved between storage volumes. Multiple rules are supported; the longest matching prefix wins. **Preview local path** is a temporary, unsaved mapping calculator: it shows the P5 path the draft rules would derive for a representative local path, but does not select or read a folder, contact P5, or affect main-window checks.
 - **Review before checking (new in 0.8)** — automatic checking after a folder drop can be disabled in Settings so testers can review or edit the derived P5 path first.
 - **Both roots in evidence (new in 0.8)** — History, proof reports, deletion receipts, and diagnostics distinguish the real local folder from the mapped P5 archive path.
 - **Per-file proof** — disk size/date vs P5 size/archive-date/volume/barcode/location/media-type, with an `exact` / `close` / `mismatch` / `not-archived` verdict per file.

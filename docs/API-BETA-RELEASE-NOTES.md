@@ -19,7 +19,9 @@ Concise build 13 handoff: **[v0.8 Release Notes](API-BETA-V0.8-RELEASE-NOTES.md)
   Editing the P5 path no longer clears the local folder.
 - **Per-server prefix mappings:** translate a current local prefix such as
   `/Volumes/storageA` to an archived P5 prefix such as `Volumes/storageB`. Longest match
-  wins, with path-component boundary protection and an in-Settings preview.
+  wins, with path-component boundary protection. **Preview local path** is a temporary,
+  unsaved mapping calculator; it does not select or read a folder, contact P5, or affect
+  main-window checks.
 - **Review before checking:** automatic checking after a drop remains on by default but
   can be disabled under Settings ▸ General.
 - **Clearer evidence:** History, proof CSV/TXT files, deletion receipts, and diagnostics

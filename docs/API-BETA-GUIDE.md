@@ -87,6 +87,11 @@ Dropping `/Volumes/storageA/Projects/Show01` derives
 shows the applied rule, and **Recalculate from dropped folder** restores its result after
 a manual edit.
 
+**Preview local path** is a temporary mapping calculator. Enter a representative full
+current-local path to see the archived P5 path that the draft rules would derive. The
+preview value is not saved, is not another mapping, does not select or read a real
+folder, does not contact P5, and does not affect checks in the main window.
+
 Mapping changes only the P5 lookup. Enumeration, delete safeguards, and archive
 submission continue using the real local folder.
 

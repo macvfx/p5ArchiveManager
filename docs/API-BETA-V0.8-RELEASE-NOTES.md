@@ -19,9 +19,11 @@ Focus: **Phase 1 storage-path mapping and connection safety**
 - **Per-server path mappings:** save current-local → archived-P5 prefix substitutions.
   Multiple rules are supported, matches stop at path-component boundaries, and the
   longest matching prefix wins.
-- **Improved mapping editor:** longer fields, in-field examples, validation, preview,
-  prominent saving, and automatic saving of valid changes when Settings closes or the
-  selected server changes.
+- **Improved mapping editor:** longer fields, in-field examples, validation, prominent
+  saving, and automatic saving of valid changes when Settings closes or the selected
+  server changes. **Preview local path** is an unsaved mapping calculator for a
+  representative path; it does not read a folder, contact P5, or affect main-window
+  checks.
 - **P5 connection indicator:** the main window distinguishes **Connected**,
   **Authentication failed**, **Server unreachable**, and **Not tested**, including
   latency, last-tested time, and **Retest**.
