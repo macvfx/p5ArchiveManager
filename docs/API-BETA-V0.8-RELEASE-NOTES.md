@@ -65,6 +65,5 @@ results or attaching diagnostic logs.
 
 ## Known limitations
 
-- `.p5a` and `.p5c` stub verification remains a separate Phase 2 investigation.
+
 - Archive-to-P5 remains beta and should be tested only with a disposable plan.
-- Signed/notarized distribution requires valid Apple signing certificates.
