@@ -13,7 +13,7 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ## 🆕 New in v0.10 — historical archived locations (automatic fallback search)
 
-Concise build 21 handoff: **[v0.10 Release Notes](API-BETA-V0.10-RELEASE-NOTES.md)**.
+Concise build 22 handoff: **[v0.10 Release Notes](API-BETA-V0.10-RELEASE-NOTES.md)**.
 
 Folders survive storage migrations — a project on `/Volumes/NAS1/Projects` today may
 have been archived from `Volumes/ServerOld/Stuff` or `mnt/Primary/JellyfishNFS` years

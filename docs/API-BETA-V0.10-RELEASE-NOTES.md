@@ -1,6 +1,6 @@
 # P5 Archive Manager API Beta v0.10 — Release Notes
 
-Version: **0.10 (build 21)**
+Version: **0.10 (build 22)**
 
 Release date: **2026-07-25**
 
