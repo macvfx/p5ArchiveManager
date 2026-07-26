@@ -1,6 +1,6 @@
 # P5 Archive Manager — API Beta · User Guide
 
-**v0.9.1 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
+**v0.10 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). This is the REST-API rewrite of the shipping P5 Archive Manager; the
 stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.md).
 
@@ -94,6 +94,30 @@ folder, does not contact P5, and does not affect checks in the main window.
 
 Mapping changes only the P5 lookup. Enumeration, delete safeguards, and archive
 submission continue using the real local folder.
+
+#### Historical archived locations (v0.10)
+
+Mappings rewrite the current path **deterministically** — one dropped folder, one P5
+path. But a folder may have been archived from somewhere you can't derive from its
+current path: it was moved after archiving, or it lived on older storage over the years
+(`MyGreatProject` is on `/Volumes/NAS1/Projects` today, but was archived from
+`Volumes/ServerOld/Stuff` or `mnt/Primary/JellyfishNFS`).
+
+For that, Settings has **Historical archived locations** — an ordered, per-server list
+of older P5 storage roots, one per line. When a check finds **nothing archived** at the
+current (or mapped) path, the app automatically looks for the dropped folder's **name**
+under each location in order — case-insensitively, and across every index when *Search
+all archive indexes* is on. A location only wins when the check **actually finds
+archived files** there: a same-named folder that exists but holds none of these files is
+noted and the search moves on to the next location.
+
+- The result always says which location won and what else was tried.
+- If no location has hits, the result lists everything tried — so **not archived** means
+  "not archived anywhere the app knows about", not just "not at this path".
+- The lookup is by the folder's **name** (its last path component), since the
+  surrounding structure is exactly what changes between storage generations.
+- A connection problem during the fallback probing is reported as *undetermined*, never
+  as "not found".
 
 It enumerates the files **on disk** and asks P5 only about the directories that hold
 them — so a folder with a few files left checks in a moment, even if the archive holds
@@ -244,6 +268,9 @@ off and you want to see the index with your own eyes:
 - **P5 Volumes / Barcodes** pills, populated live; **persistent volume→barcode cache**.
 - **Proof report (CSV + TXT)** — written before any delete and on demand.
 - **Delete with receipt** (guarded, re-verified, audited); **one-shot + auto re-check**.
+- **Historical archived locations (v0.10)** — per-server fallback list of older storage
+  roots; a check with no hits automatically searches them in order and reports which
+  location actually held the archived files.
 - **Check for updates (v0.9.1)** — daily on launch (silent unless an update exists) and
   via **app menu ▸ Check for Updates…**; follows only the API-beta (`0.x`) release line,
   pre-releases included.

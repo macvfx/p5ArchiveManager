@@ -1,4 +1,4 @@
-# P5 Archive Manager — API Beta v0.9.1
+# P5 Archive Manager — API Beta v0.10
 
 The REST-API rewrite of P5 Archive Manager (preview of the upcoming **v4**). Talks to the
 **Archiware P5 REST API v8** — no `nsdchat` dependency. Same job as the shipping app:
@@ -11,7 +11,23 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ---
 
-## 🆕 New in v0.9.1 — check for updates
+## 🆕 New in v0.10 — historical archived locations (automatic fallback search)
+
+Concise build 21 handoff: **[v0.10 Release Notes](API-BETA-V0.10-RELEASE-NOTES.md)**.
+
+Folders survive storage migrations — a project on `/Volumes/NAS1/Projects` today may
+have been archived from `Volumes/ServerOld/Stuff` or `mnt/Primary/JellyfishNFS` years
+ago, or simply moved after archiving. **Settings ▸ Historical archived locations** is a
+per-server, ordered list of older P5 storage roots. When a check finds **zero archived
+files** at the current (or mapped) path, the app automatically looks for the folder's
+name under each location in order (case-insensitive, all indexes when index search is
+on). **Hits decide, not existence** — a same-named folder holding none of these files is
+noted and the search continues. The result names the winning location and everything
+else tried, so "not archived" means "not archived anywhere the app knows about."
+
+---
+
+## New in v0.9.1 — check for updates
 
 Concise build 19 handoff: **[v0.9.1 Release Notes](API-BETA-V0.9.1-RELEASE-NOTES.md)**.
 
