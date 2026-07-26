@@ -1,6 +1,6 @@
 # P5 Archive Manager — API Beta · User Guide
 
-**v0.9 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
+**v0.9.1 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). This is the REST-API rewrite of the shipping P5 Archive Manager; the
 stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.md).
 
@@ -244,6 +244,9 @@ off and you want to see the index with your own eyes:
 - **P5 Volumes / Barcodes** pills, populated live; **persistent volume→barcode cache**.
 - **Proof report (CSV + TXT)** — written before any delete and on demand.
 - **Delete with receipt** (guarded, re-verified, audited); **one-shot + auto re-check**.
+- **Check for updates (v0.9.1)** — daily on launch (silent unless an update exists) and
+  via **app menu ▸ Check for Updates…**; follows only the API-beta (`0.x`) release line,
+  pre-releases included.
 - **Deep verify** full list with on-disk highlight; honours *Search all archive indexes*
   with per-index counts and live progress (v0.9).
 - **Browse** the archive index + **raw JSON** viewer (diagnostics) — with an **index

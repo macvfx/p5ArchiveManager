@@ -1,4 +1,4 @@
-# P5 Archive Manager — API Beta v0.9
+# P5 Archive Manager — API Beta v0.9.1
 
 The REST-API rewrite of P5 Archive Manager (preview of the upcoming **v4**). Talks to the
 **Archiware P5 REST API v8** — no `nsdchat` dependency. Same job as the shipping app:
@@ -11,7 +11,19 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ---
 
-## 🆕 New in v0.9 — Deep verify & Browse search the correct archive index
+## 🆕 New in v0.9.1 — check for updates
+
+Concise build 18 handoff: **[v0.9.1 Release Notes](API-BETA-V0.9.1-RELEASE-NOTES.md)**.
+
+The app now checks this repo's releases for a newer API-beta build — daily on launch
+(silent unless an update exists) and via **app menu ▸ Check for Updates…**. It follows
+only the API-beta release line (`0.x` tags, pre-releases included) and ignores the
+shipping nsdchat app's `3.x` releases in this shared repo. Nothing is downloaded
+automatically; the alert links to the release page.
+
+---
+
+## New in v0.9 — Deep verify & Browse search the correct archive index
 
 Concise build 17 handoff: **[v0.9 Release Notes](API-BETA-V0.9-RELEASE-NOTES.md)**.
 
