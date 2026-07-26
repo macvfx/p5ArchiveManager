@@ -13,7 +13,7 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ## 🆕 New in v0.9.1 — check for updates
 
-Concise build 18 handoff: **[v0.9.1 Release Notes](API-BETA-V0.9.1-RELEASE-NOTES.md)**.
+Concise build 19 handoff: **[v0.9.1 Release Notes](API-BETA-V0.9.1-RELEASE-NOTES.md)**.
 
 The app now checks this repo's releases for a newer API-beta build — daily on launch
 (silent unless an update exists) and via **app menu ▸ Check for Updates…**. It follows
