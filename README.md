@@ -16,14 +16,14 @@ P5 Archive Manager comes in two builds:
 | Edition | Version | Engine | Status |
 |---|---|---|---|
 | **Shipping** | **v3.7 build 2** | `nsdchat` (Archiware CLI) | **Stable** — recommended for everyday use |
-| **API beta** | **v0.8** (preview of the upcoming **v4**) | Archiware P5 **REST API** | **Beta — Phase 1 ready for testing** |
+| **API beta** | **v0.9** (preview of the upcoming **v4**) | Archiware P5 **REST API** | **Beta — Phase 1 ready for testing** |
 
 - **v3.7 build 2 — shipping (nsdchat).** The current, stable app documented on this page. It talks to P5 through the `nsdchat` CLI and is the build to use for real work.
-- **v0.8 — API beta (future v4).** A rewrite onto the Archiware P5 **REST API** (no `nsdchat` dependency): faster local-driven checks, optional multi-index search, per-file disk-vs-P5 proof, proof-first deletion, **storage-path mapping** for projects moved between volumes, and a classified P5 connectivity indicator/preflight. **Ready for Phase 1 testing** → **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** · **[v0.8 release notes](docs/API-BETA-V0.8-RELEASE-NOTES.md)** · **[v0.8 tester notes](docs/API-BETA-V0.8-TESTER-NOTES.md)** · **[Full API-beta history](docs/API-BETA-RELEASE-NOTES.md)**. Curious how the REST API itself works? See **[Using the P5 REST API — what we call, and why](docs/P5-REST-API-GUIDE.md)**.
+- **v0.9 — API beta (future v4).** A rewrite onto the Archiware P5 **REST API** (no `nsdchat` dependency): faster local-driven checks, optional multi-index search, per-file disk-vs-P5 proof, proof-first deletion, **storage-path mapping** for projects moved between volumes, and a classified P5 connectivity indicator/preflight. v0.9 makes **Deep verify and Browse search the correct archive index** (with per-index counts, an index picker, and one-click Browse from the checked path). **Ready for testing** → **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** · **[v0.9 release notes](docs/API-BETA-V0.9-RELEASE-NOTES.md)** · **[v0.8 tester notes](docs/API-BETA-V0.8-TESTER-NOTES.md)** · **[Full API-beta history](docs/API-BETA-RELEASE-NOTES.md)**. Curious how the REST API itself works? See **[Using the P5 REST API — what we call, and why](docs/P5-REST-API-GUIDE.md)**.
 
-> ⚠️ **The v0.8 API build is a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
+> ⚠️ **The v0.9 API build is a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
 
-### What’s new in the v0.8 API beta
+### What’s new in the v0.9 API beta
 
 Same job as the shipping app — confirm what's archived in P5, delete the proven-archived, **and** archive the rest — rebuilt on the **Archiware P5 REST API v8** instead of the `nsdchat` CLI bridge. Full details in the **[API Beta — User Guide](docs/API-BETA-GUIDE.md)**.
 
@@ -35,6 +35,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 
 **What's new (the API makes possible)**
 
+- **Deep verify & Browse search the correct index (new in 0.9)** — Deep verify scans the configured index or **every** index (per-index file counts, entries labeled by index, live progress count while scanning), and Browse gains an **index picker** plus **Browse checked path** — one click to explore the index at the folder you just checked. Previously both tools could silently query an index left over from an earlier check and show "nothing archived" while the main check found the files. The all-indexes result note now also names the index where the files were actually found.
 - **Storage-path mapping (new in 0.8)** — keep the current local folder and archived P5 path independent, and save per-server prefix substitutions for projects moved between storage volumes. Multiple rules are supported; the longest matching prefix wins. **Preview local path** is a temporary, unsaved mapping calculator: it shows the P5 path the draft rules would derive for a representative local path, but does not select or read a folder, contact P5, or affect main-window checks.
 - **Review before checking (new in 0.8)** — automatic checking after a folder drop can be disabled in Settings so testers can review or edit the derived P5 path first.
 - **Both roots in evidence (new in 0.8)** — History, proof reports, deletion receipts, and diagnostics distinguish the real local folder from the mapped P5 archive path.
@@ -67,7 +68,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 
 ## Features — shipping app (v3.7 build 2, nsdchat)
 
-> Looking for the REST-API build? See the **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** (v0.8, preview of v4).
+> Looking for the REST-API build? See the **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** (v0.9, preview of v4).
 
 - **Drag & drop** any folder to check if its files are archived on P5
 - **Multiple server support** -- configure and switch between P5 servers

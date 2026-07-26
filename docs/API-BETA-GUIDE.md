@@ -1,6 +1,6 @@
 # P5 Archive Manager — API Beta · User Guide
 
-**v0.8 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
+**v0.9 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). This is the REST-API rewrite of the shipping P5 Archive Manager; the
 stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.md).
 
@@ -183,6 +183,45 @@ receipt.**
   Delete dialog) does a full recursive walk of *everything* P5 has under the path,
   listing it all with your on-disk files **highlighted**. It's the belt-and-braces step
   in the delete chain.
+- **(v0.9)** It scans the server's **configured index** — or **every index** when *Search
+  all archive indexes* is on, showing a per-index file count in the summary and labelling
+  each entry with the index it was found in. While it runs, a live file count and running
+  size tick up next to the spinner.
+
+**Why run Deep verify when the check already said "archived"?** The two tools answer
+different questions:
+
+- The **check is disk-driven** — it asks P5 only about the files currently on disk.
+  It answers *"are my disk files archived?"* fast, but it cannot see anything else.
+- **Deep verify is P5-driven** — it lists everything the archive holds under the path.
+  It answers *"what does P5 actually have here?"*
+
+Use Deep verify when:
+
+- **Before a delete** — confirm the archive really holds the whole folder (not just the
+  files that happen to remain on disk) so freeing the space is defensible.
+- **The check found 0 or fewer files than expected** — if the local folder was already
+  partly deleted or restored elsewhere, the disk-driven check has nothing (or little) to
+  ask about; Deep verify shows what's on tape regardless of the disk.
+- **Hunting duplicates / earlier versions** — P5 keeps every past archive; Deep verify
+  lists archive-only files that no longer exist locally (they show *without* the
+  "on disk" highlight).
+- **Cross-index doubt** — with *Search all archive indexes* on, the per-index counts
+  show which index actually holds the folder (and whether copies exist in more than one).
+
+### Browse the index (Advanced tools)
+
+Browse lists one level of an archive index at a time — the raw view of what P5 stores,
+with the raw JSON response underneath for diagnostics. Use it when a check result looks
+off and you want to see the index with your own eyes:
+
+- **Browse checked path (v0.9)** starts at the P5 path from the check above (the jump
+  field is pre-filled after every check), so "go look at what P5 has there" is one click.
+- The **Index picker (v0.9)** chooses which archive index to list (defaults to the
+  server's configured index; switching re-lists the current folder) — handy for
+  confirming which index a folder actually lives in. The diagnostics line names the
+  index and full URL of every request.
+- Names P5 stores with caret-hex encodings (e.g. `\` as `^5c`) are navigable.
 
 ---
 
@@ -205,8 +244,11 @@ receipt.**
 - **P5 Volumes / Barcodes** pills, populated live; **persistent volume→barcode cache**.
 - **Proof report (CSV + TXT)** — written before any delete and on demand.
 - **Delete with receipt** (guarded, re-verified, audited); **one-shot + auto re-check**.
-- **Deep verify** full list with on-disk highlight.
-- **Browse** the archive index + **raw JSON** viewer (diagnostics).
+- **Deep verify** full list with on-disk highlight; honours *Search all archive indexes*
+  with per-index counts and live progress (v0.9).
+- **Browse** the archive index + **raw JSON** viewer (diagnostics) — with an **index
+  picker** and **Browse checked path** to start exploring at the folder you just
+  checked (v0.9).
 - **Server info**: clients & plans (with names), volume-cache size + Clear.
 - Local **check history**.
 - **Named archive jobs + manifest (v0.5)** — archive jobs carry the source folder path as

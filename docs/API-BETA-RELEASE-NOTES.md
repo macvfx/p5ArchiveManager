@@ -1,4 +1,4 @@
-# P5 Archive Manager — API Beta v0.8
+# P5 Archive Manager — API Beta v0.9
 
 The REST-API rewrite of P5 Archive Manager (preview of the upcoming **v4**). Talks to the
 **Archiware P5 REST API v8** — no `nsdchat` dependency. Same job as the shipping app:
@@ -11,7 +11,32 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ---
 
-## 🆕 New in v0.8 — storage-path mapping
+## 🆕 New in v0.9 — Deep verify & Browse search the correct archive index
+
+Concise build 17 handoff: **[v0.9 Release Notes](API-BETA-V0.9-RELEASE-NOTES.md)**.
+
+The main check looks files up in **every** index (with *Search all archive indexes* on),
+but Deep verify and Browse silently reused whatever index the previous operation left
+selected internally — so Deep verify could report **"0 files in P5 under this path"**
+while the check above showed the same files as archived. Every tool now chooses its
+index deliberately, and shows which one it used:
+
+- **Deep verify** scans the configured index — or **every** index when the toggle is on —
+  with a per-index file count in the summary (e.g. `Default-Archive: 736 ·
+  ProjectArchives: 0`), each entry labeled with its index, and a **live file count +
+  running size** next to the spinner while it works.
+- **Browse** gains an **index picker** (defaults to the configured index; switching
+  re-lists the current folder) and **Browse checked path** — one click starts exploring
+  at the P5 path from the check above. Long listings now scroll instead of overflowing
+  the panel.
+- The **all-indexes result note** reports where archived files were actually found
+  (`Searched 4 indexes — archived files found in: ProjectArchives (736)`), and
+  **P5-only checks** walk the index where the path resolved, not whichever the server
+  listed first.
+
+---
+
+## New in v0.8 — storage-path mapping
 
 Concise build 13 handoff: **[v0.8 Release Notes](API-BETA-V0.8-RELEASE-NOTES.md)**.
 
@@ -95,6 +120,16 @@ app not write metadata into your index.
 
 ## 🐛 Fixes
 
+- **Deep verify / Browse queried a stale index** *(0.9)* — both tools inherited leftover
+  internal index state from the previous check, so after an all-indexes check they could
+  query an arbitrary index and show nothing archived. They now select their index
+  deliberately (and display it), and the check clears its state on every exit.
+- **P5-only checks walked the wrong index** *(0.9)* — with all-indexes on and no dropped
+  folder, the recursive walk ran against whichever index the server listed first, even
+  when the path had just resolved in a different one. It now walks the resolved index
+  and names it in the result.
+- **Browse listing overflowed the panel** *(0.9)* — long listings drew over the header
+  controls; they now scroll inside the box.
 - **Backslash (and special-character) filenames** *(0.6)* — files with a `\` in the name
   (which P5 stores internally as `^5c`) were wrongly reported **"not archived"** even
   though they were on tape. The check now decodes P5's `^XX` encoding when matching, so
