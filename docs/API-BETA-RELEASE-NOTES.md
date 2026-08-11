@@ -1,6 +1,7 @@
-# P5 Archive Manager — API Beta v0.10
+# P5 Archive Manager API — 0.x history and transition to v4
 
-The REST-API rewrite of P5 Archive Manager (preview of the upcoming **v4**). Talks to the
+The REST API implementation of P5 Archive Manager is moving to **v4** after the final
+`0.10.1+24` bridge. It talks to the
 **Archiware P5 REST API v8** — no `nsdchat` dependency. Same job as the shipping app:
 confirm what's archived in P5, delete the proven-archived files, and archive the rest.
 
@@ -8,6 +9,16 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 > destructive actions**, and the Archive-to-P5 write is still unproven against live
 > servers. Provided **as-is, with no warranty**. Test on disposable data and verify the
 > receipts before trusting it with real projects.
+
+---
+
+## Final 0.x bridge — v0.10.1 build 24
+
+The bridge changes the update channel to accept both the final API `0.x` release and
+future API `4.x` releases while ignoring CLI `3.x`. It also explains that version 4
+continues this separately installed API application. See the concise
+**[transition release notes](API-V0.10.1-TRANSITION-RELEASE-NOTES.md)** and the adopted
+**[product-line policy](PRODUCT-LINEAGE-AND-VERSIONING.md)**.
 
 ---
 

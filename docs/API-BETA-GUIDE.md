@@ -1,8 +1,9 @@
-# P5 Archive Manager — API Beta · User Guide
+# P5 Archive Manager API · User Guide
 
-**v0.10 — beta preview of the upcoming v4.** Talks to the **Archiware P5 REST API v8**
-(no `nsdchat`). This is the REST-API rewrite of the shipping P5 Archive Manager; the
-stable nsdchat app (v3.7 build 2) is documented in the [main README](../README.md).
+**v0.10.1 build 24 — final 0.x bridge to v4.** Talks to the **Archiware P5 REST API v8**
+(no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
+different settings, workflow, and behaviour. The API app is the primary development
+focus; both applications can remain installed while it is evaluated.
 
 > ⚠️ **Beta — test only.** **Back up your data first.** Delete and Archive are real,
 > destructive actions, and the Archive-to-P5 write is still **unproven against live
@@ -271,9 +272,9 @@ off and you want to see the index with your own eyes:
 - **Historical archived locations (v0.10)** — per-server fallback list of older storage
   roots; a check with no hits automatically searches them in order and reports which
   location actually held the archived files.
-- **Check for updates (v0.9.1)** — daily on launch (silent unless an update exists) and
-  via **app menu ▸ Check for Updates…**; follows only the API-beta (`0.x`) release line,
-  pre-releases included.
+- **Check for updates (v0.9.1+)** — daily on launch (silent unless an update exists) and
+  via **app menu ▸ Check for Updates…**. The 0.10.1 bridge follows final API `0.x` and
+  future API `4.x` releases, including prereleases, while ignoring CLI `3.x`.
 - **Deep verify** full list with on-disk highlight; honours *Search all archive indexes*
   with per-index counts and live progress (v0.9).
 - **Browse** the archive index + **raw JSON** viewer (diagnostics) — with an **index
