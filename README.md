@@ -15,10 +15,10 @@ P5 Archive Manager comes in two builds:
 
 | Edition | Version | Engine | Status |
 |---|---|---|---|
-| **Shipping** | **v3.7 build 2** | `nsdchat` (Archiware CLI) | **Stable** — recommended for everyday use |
+| **Shipping** | **v3.7.1 build 5** | `nsdchat` (Archiware CLI) | **Stable** — recommended for everyday use |
 | **API beta** | **v0.10** (preview of the upcoming **v4**) | Archiware P5 **REST API** | **Beta — Phase 1 ready for testing** |
 
-- **v3.7 build 2 — shipping (nsdchat).** The current, stable app documented on this page. It talks to P5 through the `nsdchat` CLI and is the build to use for real work.
+- **v3.7.1 build 5 — shipping (nsdchat).** The current, stable app documented on this page. It talks to P5 through the `nsdchat` CLI and is the build to use for real work. This release replaces silent server-file imports with an explicit review step.
 - **v0.10 — API beta (future v4).** A rewrite onto the Archiware P5 **REST API** (no `nsdchat` dependency): faster local-driven checks, optional multi-index search, per-file disk-vs-P5 proof, proof-first deletion, **storage-path mapping** for projects moved between volumes, and a classified P5 connectivity indicator/preflight. v0.10 adds **historical archived locations** — a per-server fallback list of older storage roots automatically searched when the current path has no hits; v0.9 made **Deep verify and Browse search the correct archive index**; v0.9.1 added **check for updates**. **Ready for testing** → **[⬇ Download the current beta — v0.10 build 22](https://github.com/macvfx/p5ArchiveManager/releases/tag/0.10%2B22)** · **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** · **[v0.10 release notes](docs/API-BETA-V0.10-RELEASE-NOTES.md)** · **[v0.9.1 release notes](docs/API-BETA-V0.9.1-RELEASE-NOTES.md)** · **[v0.9 release notes](docs/API-BETA-V0.9-RELEASE-NOTES.md)** · **[v0.8 tester notes](docs/API-BETA-V0.8-TESTER-NOTES.md)** · **[Full API-beta history](docs/API-BETA-RELEASE-NOTES.md)**. Curious how the REST API itself works? See **[Using the P5 REST API — what we call, and why](docs/P5-REST-API-GUIDE.md)**.
 
 > ⚠️ **The v0.10 API build is a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
@@ -68,7 +68,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 
 ![macOS](https://img.shields.io/badge/macOS-14.0+-blue) ![Swift](https://img.shields.io/badge/Swift-5.9-orange) ![License](https://img.shields.io/badge/License-MIT-green)
 
-## Features — shipping app (v3.7 build 2, nsdchat)
+## Features — shipping app (v3.7.1 build 5, nsdchat)
 
 > Looking for the REST-API build? See the **[API Beta — User Guide](docs/API-BETA-GUIDE.md)** (v0.10, preview of v4).
 
@@ -84,6 +84,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 - **Cancel check** (v3.5) -- stop an in-progress archive check at any time
 - **Password status indicators** (v3.4) -- green/orange dots in the server dropdown and inline warnings when a server has no password saved
 - **Server import port override** (v3.5) -- imported servers automatically use port 9001 (nsdchat) instead of the API port (8000)
+- **Reviewed server discovery** (v3.7.1 build 5) -- standard server JSON files are shown for review before anything is added; accepted and ignored file revisions are remembered securely by SHA-256 fingerprint
 
 ## How to Use
 
@@ -153,9 +154,9 @@ After an archive check, you can delete the local copies of files confirmed archi
 
 P5 Archive Manager can share server configurations with other P5 Archive apps using a common JSON file.
 
-### Auto-detection at launch
+### Discovery and review at launch
 
-Place a file named `P5Servers.json` in either location and the app picks it up automatically on next launch:
+Place a file named `P5Servers.json` in either location and the app offers any new connections for review on next launch:
 
 - `/Users/Shared/P5Servers.json` — shared across all users
 - `~/Documents/P5Servers.json` — current user only
@@ -167,7 +168,7 @@ In the **Manage Servers** panel (open via the **Manage Servers** button in the t
 - **Import Servers JSON** — load servers from any `.json` file in the standard format
 - **Export Servers JSON** — save the current server list to a `.json` file (passwords excluded)
 
-Imported entries that already exist are skipped automatically. Imported servers have their port set to **9001** (nsdchat) regardless of the value in the JSON file, since other P5 apps use port 8000 for the REST API. After importing, edit each new server once to enter its password (stored in Keychain).
+Nothing is added until you choose **Add New Servers**. **Not Now** defers the decision, while **Ignore This File Version** remembers that exact SHA-256 file fingerprint. Existing connections are matched by host, effective nsdchat port, and username, so changing a local alias does not make the deployment entry appear new. Imported servers use port **9001** (nsdchat) regardless of the JSON value. After importing, edit each new server once to enter its password (stored in Keychain).
 
 The JSON format matches the other P5 utility apps: `{ "servers": [{ "alias", "host", "port", "username", "apiVersion", "useHTTPS" }] }`.
 
