@@ -16,14 +16,14 @@ P5 Archive Manager comes in two builds:
 | Edition | Version | Engine | Status |
 |---|---|---|---|
 | **CLI** | **v3.7.1 build 5** | `nsdchat` (Archiware CLI) | **Stable** — separately installed 3.x line |
-| **API** | **v0.10.1 build 24** (final 0.x bridge to **v4**) | Archiware P5 **REST API** | **Primary development focus; beta** |
+| **API** | **v4.0.0 build 25** | Archiware P5 **REST API** | **Primary development focus; pre-release beta** |
 
 - **v3.7.1 build 5 — CLI (`nsdchat`).** The current stable 3.x application. It remains separately installed and may continue where CLI-specific capabilities are useful.
-- **v0.10.1 build 24 — API bridge to v4.** The REST API application is the primary focus for new development and is more portable because it has no `nsdchat` dependency. Its workflow and behaviour differ from the CLI app, and both can remain installed. This final 0.x build changes the API update channel so it can discover version 4 while continuing to ignore CLI 3.x. **[⬇ Download API 0.10.1 build 24](https://github.com/macvfx/p5ArchiveManager/releases/tag/0.10.1%2B24)** · **[transition notes](docs/API-V0.10.1-TRANSITION-RELEASE-NOTES.md)** · **[product lineage and versioning](docs/PRODUCT-LINEAGE-AND-VERSIONING.md)** · **[API User Guide](docs/API-BETA-GUIDE.md)** · **[full API history](docs/API-BETA-RELEASE-NOTES.md)**.
+- **v4.0.0 build 25 — API.** The REST API application is the primary focus for new development and is more portable because it has no `nsdchat` dependency. Its workflow and behaviour differ from the CLI app, and both can remain installed. This is the first release on the 4.x line — the same application as the 0.x API beta, with the prototype numbering retired; your servers, mappings, history and receipts carry over. **[⬇ Download API 4.0.0 build 25](https://github.com/macvfx/p5ArchiveManager/releases/tag/4.0.0%2B25)** · **[release notes](docs/API-V4.0-RELEASE-NOTES.md)** · **[what was wrong with colon filenames](docs/API-V4.0-COLON-FILENAME-FIX.md)** · **[product lineage and versioning](docs/PRODUCT-LINEAGE-AND-VERSIONING.md)** · **[API User Guide](docs/API-BETA-GUIDE.md)** · **[full API history](docs/API-BETA-RELEASE-NOTES.md)**.
 
-> ⚠️ **The v0.10.1 API bridge remains a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
+> ⚠️ **The v4.0.0 API release remains a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
 
-### P5 Archive Manager API: final 0.x bridge, then version 4
+### P5 Archive Manager API: version 4
 
 Same job as the shipping app — confirm what's archived in P5, delete the proven-archived, **and** archive the rest — rebuilt on the **Archiware P5 REST API v8** instead of the `nsdchat` CLI bridge. Full details in the **[API Beta — User Guide](docs/API-BETA-GUIDE.md)**.
 
@@ -36,7 +36,9 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 **What's new (the API makes possible)**
 
 - **Historical archived locations (new in 0.10)** — a per-server, ordered list of older P5 storage roots (Settings, under Path mapping). When a check finds **zero archived files** at the current or mapped path, the app automatically looks for the folder's **name** under each listed location in turn — and a location only wins when the check **actually finds archived files** there (a same-named folder with none of these files is noted and the search continues). The result names the winning location and everything tried, so "not archived" means "not archived anywhere the app knows about." Covers folders moved after archiving and folders that lived on different storage over the years.
-- **Version 4 transition (new in 0.10.1)** — the update checker follows the final API `0.x` bridge and future API `4.x` releases (pre-releases included), while continuing to ignore CLI `3.x`. Nothing downloads automatically—the alert links to the release page.
+- **Filenames and folders containing `:` are matched correctly (new in 4.0)** — previously these were reported as **not archived even when they were archived**, and nothing inside a colon-named *folder* could be found at all. P5 reports every name twice: the real bytes on disk, and a Finder-style display form in which macOS shows a `:` as `/`. The app was comparing against the display form. **Nothing was ever renamed or lost** — a restore returns colon-named files byte-identical, so archives made before this release are correct and need no repair. If a folder used to show unexplained "not archived" files, re-check it. **[Full explanation](docs/API-V4.0-COLON-FILENAME-FIX.md)**.
+- **Possible-match suggestions (new in 4.0)** — a not-archived file whose name closely resembles something archived in the same folder is flagged with the candidate and a similarity score. This is a lead, not a verdict: the file stays counted as not archived, does not become deletable, and is never auto-linked. Catches renames since archiving, truncated names, and characters sanitised by other tools.
+- **Version 4 transition (new in 0.10.1)** — the update checker follows API `4.x` releases (pre-releases included), while continuing to ignore CLI `3.x`. Nothing downloads automatically—the alert links to the release page.
 - **Deep verify & Browse search the correct index (new in 0.9)** — Deep verify scans the configured index or **every** index (per-index file counts, entries labeled by index, live progress count while scanning), and Browse gains an **index picker** plus **Browse checked path** — one click to explore the index at the folder you just checked. Previously both tools could silently query an index left over from an earlier check and show "nothing archived" while the main check found the files. The all-indexes result note now also names the index where the files were actually found.
 - **Storage-path mapping (new in 0.8)** — keep the current local folder and archived P5 path independent, and save per-server prefix substitutions for projects moved between storage volumes. Multiple rules are supported; the longest matching prefix wins. **Preview local path** is a temporary, unsaved mapping calculator: it shows the P5 path the draft rules would derive for a representative local path, but does not select or read a folder, contact P5, or affect main-window checks.
 - **Review before checking (new in 0.8)** — automatic checking after a folder drop can be disabled in Settings so testers can review or edit the derived P5 path first.
@@ -70,7 +72,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 
 ## Features — CLI app (v3.7.1 build 5, nsdchat)
 
-> Looking for the REST API build? See the **[API User Guide](docs/API-BETA-GUIDE.md)** and **[version transition notes](docs/API-V0.10.1-TRANSITION-RELEASE-NOTES.md)**.
+> Looking for the REST API build? See the **[API User Guide](docs/API-BETA-GUIDE.md)**, the **[4.0 release notes](docs/API-V4.0-RELEASE-NOTES.md)**, and the **[version transition notes](docs/API-V0.10.1-TRANSITION-RELEASE-NOTES.md)**.
 
 - **Drag & drop** any folder to check if its files are archived on P5
 - **Multiple server support** -- configure and switch between P5 servers
