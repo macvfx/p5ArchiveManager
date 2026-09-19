@@ -12,7 +12,7 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ---
 
-## 🆕 v4.1.0 build 29 — HTTPS, and archive plans that delete folders
+## 🆕 v4.1.0 build 30 — HTTPS, and archive plans that delete folders
 
 HTTPS support on port 8443 with per-server protocol choice and certificates you inspect
 and trust explicitly, with no silent fallback to HTTP. Fixes archive plans configured to

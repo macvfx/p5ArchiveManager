@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.1.0 build 29 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.1.0 build 30 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.

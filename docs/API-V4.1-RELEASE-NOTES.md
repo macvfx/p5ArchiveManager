@@ -1,6 +1,6 @@
 # P5 Archive Manager API 4.1.0 (build 29) — pre-release beta
 
-**Status:** pre-release · **Date:** 2026-09-18 · **Tag:** `4.1.0+29`
+**Status:** pre-release · **Date:** 2026-09-18 · **Tag:** `4.1.0+30`
 
 > ⚠️ **Beta — test only.** Back up your data first. **Delete and Archive are real,
 > destructive actions.** Provided **as-is, with no warranty**. Test on disposable data
