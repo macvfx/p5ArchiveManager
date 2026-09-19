@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v0.10.1 build 24 — final 0.x bridge to v4.** Talks to the **Archiware P5 REST API v8**
+**v4.1.0 build 29 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -190,11 +190,18 @@ receipt.**
   so the archive is **searchable by source path** and the origin shows on the entry. Only
   applied when the plan's index has a `description` key (a P5 default), so it never blocks
   archiving. Turn it off if you don't want the app writing metadata into your index.
-- **Plan `deletefiles` flag:** plans configured to delete sources after archiving are
-  marked **"⚠ deletes source"** in the picker, with a warning on selection and in the
-  confirm dialog. Such a plan archives **and deletes the source P5-side, without the
-  app's proof/receipt** — for the proof-first workflow, archive with a *non*-deletefiles
-  plan, then let the app delete (with receipt).
+- **Plans that delete at the source (updated in 4.1):** a P5 archive plan can clean up
+  after a successful job in two separate ways — remove the archived **files**, or remove
+  the **files and their folders**. Either one marks the plan **"⚠ deletes files"** or
+  **"⚠ deletes files and folders"** in the picker, with a matching warning on selection,
+  in the confirm dialog and in Server info. Such a plan deletes **P5-side, without the
+  app's proof/receipt** — for the proof-first workflow, archive with a plan that keeps
+  your originals, then let the app delete (with receipt).
+- **Block archive plans that delete at the source (4.1, Settings ▸ Archiving, ON by
+  default):** while this is on, a plan carrying either delete setting can still be
+  selected and inspected, but **Archive stays disabled** — the proof-first workflow is the
+  only one available in the app. Turn it off to allow those plans; they remain flagged and
+  still need confirming.
 - **Client/path:** files are submitted as the **selected client** sees them. Pick the
   client that actually mounts the volume (e.g. `jellyfish`/`VanMacStudio` for
   `/Volumes/JellyfishSMB`; `localhost` for paths on the P5 server).

@@ -12,6 +12,25 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ---
 
+## 🆕 v4.1.0 build 29 — HTTPS, and archive plans that delete folders
+
+HTTPS support on port 8443 with per-server protocol choice and certificates you inspect
+and trust explicitly, with no silent fallback to HTTP. Fixes archive plans configured to
+delete **files and folders** appearing completely unflagged, and adds a setting —
+**on by default** — that blocks plans which delete at the source, because P5 performs
+those deletions itself without this app's proof or receipt. Full
+**[4.1.0 release notes](API-V4.1-RELEASE-NOTES.md)**.
+
+---
+
+## v4.0.0 build 25 — colon filenames matched correctly
+
+The first release on the 4.x line. See the
+**[4.0.0 release notes](API-V4.0-RELEASE-NOTES.md)** and the
+**[colon filename write-up](API-V4.0-COLON-FILENAME-FIX.md)**.
+
+---
+
 ## Final 0.x bridge — v0.10.1 build 24
 
 The bridge changes the update channel to accept both the final API `0.x` release and
