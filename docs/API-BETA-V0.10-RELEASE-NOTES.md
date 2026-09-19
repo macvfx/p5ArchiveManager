@@ -15,7 +15,7 @@ Focus: **Historical archived locations — automatic fallback search**
 Path mappings rewrite the current path **deterministically** — one dropped folder, one
 P5 path. But folders survive storage migrations: `MyGreatProject` may sit on
 `/Volumes/NAS1/Projects` today while its archive was made from `Volumes/ServerOld/Stuff`
-or `mnt/Primary/JellyfishNFS` years ago — and after archiving, a folder may simply have
+or `mnt/Primary/SharedNFS` years ago — and after archiving, a folder may simply have
 been moved to another spot on the same server. Until now the check could only answer for
 the one path it was given.
 

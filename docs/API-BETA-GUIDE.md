@@ -102,7 +102,7 @@ Mappings rewrite the current path **deterministically** — one dropped folder, 
 path. But a folder may have been archived from somewhere you can't derive from its
 current path: it was moved after archiving, or it lived on older storage over the years
 (`MyGreatProject` is on `/Volumes/NAS1/Projects` today, but was archived from
-`Volumes/ServerOld/Stuff` or `mnt/Primary/JellyfishNFS`).
+`Volumes/ServerOld/Stuff` or `mnt/Primary/SharedNFS`).
 
 For that, Settings has **Historical archived locations** — an ordered, per-server list
 of older P5 storage roots, one per line. When a check finds **nothing archived** at the
@@ -203,8 +203,8 @@ receipt.**
   only one available in the app. Turn it off to allow those plans; they remain flagged and
   still need confirming.
 - **Client/path:** files are submitted as the **selected client** sees them. Pick the
-  client that actually mounts the volume (e.g. `jellyfish`/`VanMacStudio` for
-  `/Volumes/JellyfishSMB`; `localhost` for paths on the P5 server).
+  client that actually mounts the volume (e.g. `media-server`/`studio-mac` for
+  `/Volumes/SharedSMB`; `localhost` for paths on the P5 server).
 - **One-shot + auto re-check:** like Delete, the Archive button **disables after running**
   and the app **re-checks the folder** so newly-archived files move into the archived
   count. Note: P5 indexing can lag job completion — if a re-check still shows files as

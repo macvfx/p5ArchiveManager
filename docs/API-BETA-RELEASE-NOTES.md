@@ -46,7 +46,7 @@ continues this separately installed API application. See the concise
 Concise build 22 handoff: **[v0.10 Release Notes](API-BETA-V0.10-RELEASE-NOTES.md)**.
 
 Folders survive storage migrations — a project on `/Volumes/NAS1/Projects` today may
-have been archived from `Volumes/ServerOld/Stuff` or `mnt/Primary/JellyfishNFS` years
+have been archived from `Volumes/ServerOld/Stuff` or `mnt/Primary/SharedNFS` years
 ago, or simply moved after archiving. **Settings ▸ Historical archived locations** is a
 per-server, ordered list of older P5 storage roots. When a check finds **zero archived
 files** at the current (or mapped) path, the app automatically looks for the folder's
