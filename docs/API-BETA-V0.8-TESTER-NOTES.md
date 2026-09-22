@@ -128,11 +128,11 @@ Test overlapping mappings such as:
 
 ```text
 /Volumes/storageA          → Volumes/GeneralArchive
-/Volumes/storageA/Projects → Volumes/ProjectArchive
+/Volumes/storageA/Projects → Volumes/Project-Archive
 ```
 
 Expected for `/Volumes/storageA/Projects/Show01`:
-`Volumes/ProjectArchive/Show01`.
+`Volumes/Project-Archive/Show01`.
 
 ### 7. Per-server persistence
 

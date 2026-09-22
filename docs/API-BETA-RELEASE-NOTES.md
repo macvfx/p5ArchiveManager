@@ -81,14 +81,14 @@ index deliberately, and shows which one it used:
 
 - **Deep verify** scans the configured index — or **every** index when the toggle is on —
   with a per-index file count in the summary (e.g. `Default-Archive: 736 ·
-  ProjectArchives: 0`), each entry labeled with its index, and a **live file count +
+  Project-Archive: 0`), each entry labeled with its index, and a **live file count +
   running size** next to the spinner while it works.
 - **Browse** gains an **index picker** (defaults to the configured index; switching
   re-lists the current folder) and **Browse checked path** — one click starts exploring
   at the P5 path from the check above. Long listings now scroll instead of overflowing
   the panel.
 - The **all-indexes result note** reports where archived files were actually found
-  (`Searched 4 indexes — archived files found in: ProjectArchives (736)`), and
+  (`Searched 4 indexes — archived files found in: Project-Archive (736)`), and
   **P5-only checks** walk the index where the path resolved, not whichever the server
   listed first.
 

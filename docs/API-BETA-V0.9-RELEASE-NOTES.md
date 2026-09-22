@@ -26,7 +26,7 @@ Every tool now chooses its archive index deliberately, and shows which one it us
 
 - **Deep verify — deliberate index scope:** scans the server's configured index, or
   **every** index when *Search all archive indexes* is on. With multiple indexes the
-  summary shows a per-index file count (e.g. `Default-Archive: 736 · ProjectArchives: 0`)
+  summary shows a per-index file count (e.g. `Default-Archive: 736 · Project-Archive: 0`)
   and each entry row is labeled with the index it was found in.
 - **Deep verify — live progress:** an increasing file count and running size appear next
   to the spinner while scanning, so long scans visibly make progress.
@@ -37,7 +37,7 @@ Every tool now chooses its archive index deliberately, and shows which one it us
   and the jump field is pre-filled after every check — explore exactly what you just
   checked.
 - **Clearer all-indexes result note:** the check's note now reports where archived files
-  were actually found — `Searched 4 indexes — archived files found in: ProjectArchives
+  were actually found — `Searched 4 indexes — archived files found in: Project-Archive
   (736)` — instead of only listing what was searched. When nothing matched, it names the
   index the path resolved in, if any.
 - **P5-only checks** (typed path, no dropped folder) walk the index where the path
