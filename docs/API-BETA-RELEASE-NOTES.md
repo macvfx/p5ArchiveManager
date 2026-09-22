@@ -12,7 +12,15 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ---
 
-## 🆕 v4.2.0 build 42 — restore from a project file
+## 🆕 v4.2.1 build 43 — What's New in the app
+
+**Help ▸ What's New…** shows the release notes for every version, newest first, with each
+release's headline feature highlighted — for 4.2, **Restore from Project File**. It opens
+once by itself after an update. Full **[4.2.1 release notes](API-V4.2.1-RELEASE-NOTES.md)**.
+
+---
+
+## v4.2.0 build 42 — restore from a project file
 
 Drop an editor's timeline export — Resolve or Premiere **XML**, Final Cut Pro **FCPXML**
 or **.fcpxmld**, a Resolve **.drt**, or a list of paths — and the app lists the media it

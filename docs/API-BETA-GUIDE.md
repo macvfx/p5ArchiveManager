@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.2.0 build 42 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.2.1 build 43 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -454,6 +454,16 @@ Known caveats:
 - **Size tolerance = 64 KB** for "close" (the provenance list shows the exact Δ).
 - **Sub-directory case:** only the *base* path is case-corrected; nested folders use the
   disk's casing, so a nested folder whose case differs from P5 may show as not-archived.
+
+---
+
+## What's New
+
+**Help ▸ What's New…** shows the release notes for every version, newest first. Each
+release's headline feature sits on a highlighted card — marked **NEW** while it belongs
+to the current release line — above that release's smaller changes. The window opens by
+itself once after the app is updated; the Help window's *What's New* card opens it too.
+The notes are the app's own `RELEASES.md`, bundled with it.
 
 ---
 
