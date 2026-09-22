@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.1.0 build 30 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.2.0 build 42 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -241,6 +241,112 @@ Use Deep verify when:
 - **Cross-index doubt** — with *Search all archive indexes* on, the per-index counts
   show which index actually holds the folder (and whether copies exist in more than one).
 
+### Restore from a project file (4.2)
+
+**File ▸ Restore from Project File…** (⇧⌘R), or the button beside *Local folder to
+inspect*, opens a separate window. Instead of dropping a folder, drop the timeline an
+editor exported and the app works out which media it needs.
+
+| File | From | What is read |
+|---|---|---|
+| `.xml` | DaVinci Resolve, Premiere (xmeml) | every `<pathurl>` |
+| `.fcpxml` | Final Cut Pro | every `media-rep` of kind *original-media* (proxies are ignored) |
+| `.fcpxmld` | Final Cut Pro (a folder) | the `Info.fcpxml` inside it |
+| `.drt` | DaVinci Resolve timeline (a zip) | every `<MediaFilePath>` |
+| `.txt` `.tsv` `.csv` `.log` | anything | one absolute path or `file://` URL per line, or per tab-separated field |
+
+P5's own *media list* restore takes an XML or FCPXML directly, but not an `.fcpxmld`
+or a `.drt`, and it does not know about RED clips.
+
+1. **Pick the server** at the top of the window. Paths from the project go through that
+   server's **path mappings**, exactly as a dropped folder does.
+   **Search all archive indexes** (on by default in this window) starts with the
+   server's own index and then tries every other index P5 lists, until each item is
+   found; a badge on the row names the index when it is not the server's own.
+2. **Drop the file** (or *Choose File…*). The check runs straight away when *auto-check
+   after drop* is on in Settings; otherwise click **Check Archive**.
+3. **Read the list.** Each row shows P5's size and archive date on the right, and under
+   it what to do, checked at the file's **original location** — the path the project
+   names, usually on shared storage, as this Mac sees it:
+   - **Needs to be restored — not in its original location**; or *— only a 0-byte
+     placeholder*, *— only a link*, *— a different size*, or for a RED clip *— 3 of 44
+     files* in its original location. Restore puts them back where they were.
+   - **In its original location** (green) when it is already there in full.
+   - **Not in its original location** (grey) for media P5 does not have — nothing to
+     restore.
+
+   The storage has to be mounted on the Mac running the check: an unmounted share reads
+   as *not in its original location*. A request that failed shows as *Not checked*
+   (orange) — never as *Not in P5*.
+4. Rows that are archived and not already here in full are **pre-selected**. Use the
+   *Show* filter and the checkboxes to change that. The list scrolls inside its own box;
+   *Search options* folds away after a check (its one-line summary says what was used)
+   and opens again with a click. The bar above the list holds *Select Needs Restore*,
+   *Select None* and **Prepare Restore**.
+5. **Prepare Restore** looks up each selected item's archive entry: how many versions P5
+   holds (the latest is restored), when it was archived, and which tapes it is on —
+   with each tape's online/offline state and P5 *location* field. Nothing is restored yet.
+6. Choose where it goes and click **Restore** — the destination and the button sit at
+   the top of the Restore section, above the prepared items (which scroll in their own box):
+   - **Original location** — back to the path the project expects, so it relinks without
+     work. Pick the P5 client that owns that storage.
+   - **Into a folder** — a folder that already exists on the chosen P5 client (a path on
+     that client, not on this Mac). Files keep their names; two selected files with the
+     same name are refused rather than overwriting each other.
+7. One P5 restore job is submitted and watched to the end, with its phase, the tape or
+   drive it is waiting for, and the job report. **Cancel Job** asks P5 to stop it.
+
+#### How each item is found
+
+The app tries these in order and stops for an item as soon as one finds it. Every find
+is confirmed with P5 before the row counts as archived.
+
+1. **The server's index, then every other index** (with *Search all archive indexes*),
+   at the project's path after your path mappings — one folder listing per folder.
+2. **TSV inventories**, when a folder is set (*Settings ▸ TSV inventories*, or in the
+   window). P5 exports one inventory per volume (tape), a `.tsv` named by volume ID; every
+   `.tsv` in the folder and its subfolders is read, six- or eight-column. Each project
+   file is looked up **by name**, and the row's **entry handle** is confirmed in one
+   request — so media moved before archiving is found, and imported volumes too. Millions
+   of rows take a few seconds; the files are only read. Does not need P5 Archive Browser.
+3. **P5 Archive Browser's tape catalogue**, when P5 Archive Browser is on the same Mac
+   (*Look files up in P5 Archive Browser's tape catalogue*, on by default). The same
+   lookup by name from its database, which it builds from the TSVs imported there;
+   read-only.
+4. **Imported-volume roots** from *Settings ▸ Imported volumes*, as a fallback rule.
+5. **Locations pasted from the P5 web app.** If P5 web shows where one of the project's
+   files or folders is archived, paste that *Archive Location* here. The app lines it up
+   with the project's paths from the end and re-roots every item through the folders that
+   match — including copies of the same show folder on other drives.
+
+Rows show where each item was found: the index when it is not the server's own, and the
+tape or volume when an inventory placed it. A grey note under *Check Archive* says how
+many were found which way.
+
+**Imported volumes.** P5's *Imported-Volumes* index shows each imported volume in the P5
+web app as a folder named `‹VolumeName›-‹uuid›` with the original `Volumes/…` path
+underneath. That folder only groups the media: P5 stores the path **without** it —
+confirmed on a live server, where every lookup that included it failed and every
+lookup without it succeeded. P5's REST API also cannot list folders inside that index,
+so the reliable routes are a TSV inventory or P5 Archive Browser's catalogue, which name
+each file's archived path directly. If you do use *Settings ▸ Imported volumes*, paste
+each volume's folder as P5 web shows it (`‹VolumeName›-‹uuid›`; a pasted full location
+is cut down to that). For a first restore of imported media, use **Into a folder**:
+where P5 puts an original-location restore of imported media has not been verified.
+
+**RED footage.** A RED clip is a `.RDC` folder of `_001.R3D`, `_002.R3D`… segments, and
+timelines name only `_001.R3D`. Restoring just that file gives a clip that stops after
+its first segment. With **Restore the whole RED clip folder** on (the default), any
+`.R3D` inside a `.RDC` folder is replaced by the whole folder: the row shows the folder,
+how many segments P5 holds, and which segments the project named. On LTO this is also
+one linear read instead of a series of single files.
+
+Every restore is recorded **before** it is sent, in
+`~/Library/Application Support/P5ArchiveManagerAPI/project-restores.json`, with the
+job id added the moment P5 accepts it. A request that times out is reported as
+*delivery uncertain* — check P5's job list before submitting again, because a second
+submission is a second job.
+
 ### Browse the index (Advanced tools)
 
 Browse lists one level of an archive index at a time — the raw view of what P5 stores,
@@ -288,6 +394,10 @@ off and you want to see the index with your own eyes:
   picker** and **Browse checked path** to start exploring at the folder you just
   checked (v0.9).
 - **Server info**: clients & plans (with names), volume-cache size + Clear.
+- **Restore from project file (4.2)** — XML, FCPXML, FCPXMLD, DRT or a path list →
+  each item's archive status and original location → one restore job, with versions,
+  tapes, the whole-RED-clip rule, TSV inventories and imported volumes. See *Restore from
+  a project file*.
 - Local **check history**.
 - **Named archive jobs + manifest (v0.5)** — archive jobs carry the source folder path as
   their title (shown in the P5 job monitor); accepted files (`path → P5 handle`) saved to

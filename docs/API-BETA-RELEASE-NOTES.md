@@ -12,7 +12,20 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ---
 
-## 🆕 v4.1.0 build 30 — HTTPS, and archive plans that delete folders
+## 🆕 v4.2.0 build 42 — restore from a project file
+
+Drop an editor's timeline export — Resolve or Premiere **XML**, Final Cut Pro **FCPXML**
+or **.fcpxmld**, a Resolve **.drt**, or a list of paths — and the app lists the media it
+uses, finds each item in P5 (every index, including **Imported-Volumes**), says whether it
+is still in its original location, and restores what is missing in one P5 job. **RED
+clips come back whole**: the timeline names only `_001.R3D`, so the app restores the
+clip's `.RDC` folder. Media moved before archiving is found by name through P5
+volume-inventory **TSVs**, P5 Archive Browser's catalogue, or one location pasted from
+the P5 web app. Full **[4.2.0 release notes](API-V4.2-RELEASE-NOTES.md)**.
+
+---
+
+## v4.1.0 build 30 — HTTPS, and archive plans that delete folders
 
 HTTPS support on port 8443 with per-server protocol choice and certificates you inspect
 and trust explicitly, with no silent fallback to HTTP. Fixes archive plans configured to
