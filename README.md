@@ -15,10 +15,10 @@ P5 Archive Manager comes in two builds:
 
 | Edition | Version | Engine | Status |
 |---|---|---|---|
-| **CLI** | **v3.7.1 build 5** | `nsdchat` (Archiware CLI) | **Stable** — separately installed 3.x line |
+| **CLI** | **v3.7.2 build 6** | `nsdchat` (Archiware CLI) | **Stable** — separately installed 3.x line |
 | **API** | **v4.2.1 build 43** | Archiware P5 **REST API** | **Primary development focus; pre-release beta** |
 
-- **v3.7.1 build 5 — CLI (`nsdchat`).** The current stable 3.x application. It remains separately installed and may continue where CLI-specific capabilities are useful.
+- **v3.7.2 build 6 — CLI (`nsdchat`).** The current stable 3.x application. It remains separately installed and may continue where CLI-specific capabilities are useful. **New in 3.7.2:** its own update channel (it never offers the API app as an update), the name *P5 Archive Manager CLI*, and a one-time note about the API beta. **[⬇ Download CLI 3.7.2 build 6](https://github.com/macvfx/p5ArchiveManager/releases/tag/3.7.2%2B6)** · **[release notes](docs/SHIPPING-V3.7.2-RELEASE-NOTES.md)**.
 - **v4.2.1 build 43 — API.** The REST API application is the primary focus for new development and is more portable because it has no `nsdchat` dependency. Its workflow and behaviour differ from the CLI app, and both can remain installed. **New in 4.2.1: What's New in the app** (Help ▸ What's New, with each release's headline feature highlighted). **New in 4.2: Restore from Project File** — drop an editor's XML, FCPXML, FCPXMLD or Resolve DRT, see which of its media P5 holds and whether it is still in its original location, and restore what is missing in one job; RED clips come back as their whole `.RDC` folder, and media moved before archiving or on imported volumes is found through P5 volume-inventory TSVs. Your servers, mappings, history and receipts carry over. **[⬇ Download the current beta — API 4.2.1 build 43](https://github.com/macvfx/p5ArchiveManager/releases/tag/4.2.1%2B43)** · **[4.2.1 release notes](docs/API-V4.2.1-RELEASE-NOTES.md)** · **[4.2 release notes](docs/API-V4.2-RELEASE-NOTES.md)** · **[4.1 release notes](docs/API-V4.1-RELEASE-NOTES.md)** · **[4.0 release notes](docs/API-V4.0-RELEASE-NOTES.md)** · **[what was wrong with colon filenames](docs/API-V4.0-COLON-FILENAME-FIX.md)** · **[product lineage and versioning](docs/PRODUCT-LINEAGE-AND-VERSIONING.md)** · **[API User Guide](docs/API-BETA-GUIDE.md)** · **[full API history](docs/API-BETA-RELEASE-NOTES.md)**.
 
 > ⚠️ **The v4.2.1 API release remains a beta — test only.** **Back up your data before using it.** Delete and Archive are real, destructive actions, and the Archive-to-P5 write is still unproven against live servers. 4.2 adds restores: test **Restore into a folder** on a P5 client before restoring to the original location, which has not yet been exercised against a live server. Provided **as-is, with no warranty of any kind** — test on disposable data and verify the receipts before trusting it with real projects.
@@ -72,7 +72,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 
 ![macOS](https://img.shields.io/badge/macOS-14.0+-blue) ![Swift](https://img.shields.io/badge/Swift-5.9-orange) ![License](https://img.shields.io/badge/License-MIT-green)
 
-## Features — CLI app (v3.7.1 build 5, nsdchat)
+## Features — CLI app (v3.7.2 build 6, nsdchat)
 
 > Looking for the REST API build? See the **[API User Guide](docs/API-BETA-GUIDE.md)**, the **[4.0 release notes](docs/API-V4.0-RELEASE-NOTES.md)**, and the **[version transition notes](docs/API-V0.10.1-TRANSITION-RELEASE-NOTES.md)**.
 
@@ -89,6 +89,7 @@ Same job as the shipping app — confirm what's archived in P5, delete the prove
 - **Password status indicators** (v3.4) -- green/orange dots in the server dropdown and inline warnings when a server has no password saved
 - **Server import port override** (v3.5) -- imported servers automatically use port 9001 (nsdchat) instead of the API port (8000)
 - **Reviewed server discovery** (v3.7.1 build 5) -- standard server JSON files are shown for review before anything is added; accepted and ignored file revisions are remembered securely by SHA-256 fingerprint
+- **Separate update channel** (v3.7.2 build 6) -- update checks follow only CLI 3.x releases, so the REST API app is never offered as an in-place update; the app is named *P5 Archive Manager CLI*
 
 ## How to Use
 
