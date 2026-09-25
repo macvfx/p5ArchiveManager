@@ -1,6 +1,6 @@
-# P5 Archive Manager API 4.3.0 (build 44) — pre-release beta
+# P5 Archive Manager API 4.3.0 (build 45) — pre-release beta
 
-**Status:** pre-release · **Date:** 2026-09-25 · **Tag:** `4.3.0+44`
+**Status:** pre-release · **Date:** 2026-09-25 · **Tag:** `4.3.0+45`
 
 Restore from Project File can now find a project's media in an imported-volumes index through the
 REST API alone.
@@ -20,6 +20,10 @@ on items found this way and worked.
 - A volume that cannot be listed is reported as a warning.
 
 ## Fixed
+
+- (Build 45) The results row no longer resizes: the **All** segment of the Show filter grew and shrank
+  with the window and covered its label, and the four count tiles changed width as a check counted up.
+  Both are now fixed width.
 
 - A check through the REST API alone found nothing in Imported-Volumes: the lookup used a path form
   P5 refuses, and only worked after the TSV or catalogue route had taught the app the right one.
