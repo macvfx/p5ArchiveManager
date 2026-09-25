@@ -12,7 +12,17 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ---
 
-## 🆕 v4.2.1 build 43 — What's New in the app
+## 🆕 v4.3.0 build 44 — Find imported volumes
+
+Media in an **Imported-Volumes** index is now found through the REST API alone, without the TSV
+inventories or P5 Archive Browser's catalogue: 53 of 53 items of a real project were found that
+way, and Prepare Restore and Restore into a folder worked on them. **Find imported volumes…**
+lists the volumes, and media moved before archiving is found by listing them. Full
+**[4.3.0 release notes](API-V4.3.0-RELEASE-NOTES.md)**.
+
+---
+
+## v4.2.1 build 43 — What's New in the app
 
 **Help ▸ What's New…** shows the release notes for every version, newest first, with each
 release's headline feature highlighted — for 4.2, **Restore from Project File**. It opens

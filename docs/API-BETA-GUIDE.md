@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.2.1 build 43 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.3.0 build 44 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -313,8 +313,20 @@ is confirmed with P5 before the row counts as archived.
    (*Look files up in P5 Archive Browser's tape catalogue*, on by default). The same
    lookup by name from its database, which it builds from the TSVs imported there;
    read-only.
-4. **Imported-volume roots** from *Settings ▸ Imported volumes*, as a fallback rule.
-5. **Locations pasted from the P5 web app.** If P5 web shows where one of the project's
+4. **Imported-volume roots** from *Settings ▸ Imported volumes*, as a fallback rule: each
+   project path is looked up in the imported-volumes index once, without the volume's root, which
+   is how P5 stores it.
+5. **Listing the imported volumes**, for media moved before archiving. A project that says
+   `…/Clients/‹client›/…` may have been archived from `…/Clients/To Archive/‹client›/…`, so no lookup
+   at the project's path finds it. The imported-volumes index lists from a plain volume label, so
+   for each volume the project's files were on, the app finds the labels that hold it, walks down the
+   project's own folder names (looking one level inside each folder where the next one is not
+   there, which is how a `To Archive` wrapper turns up) and confirms each path it arrives at with P5.
+   It only reads, and it is bounded: a budget of about 600 listing requests, and at most 60
+   folders looked into at one level. It needs the volume labels in *Imported volumes* (*Find
+   imported volumes…* fills them in) and can be turned off there. This is the route that works
+   through the REST API alone.
+6. **Locations pasted from the P5 web app.** If P5 web shows where one of the project's
    files or folders is archived, paste that *Archive Location* here. The app lines it up
    with the project's paths from the end and re-roots every item through the folders that
    match — including copies of the same show folder on other drives.
@@ -323,16 +335,28 @@ Rows show where each item was found: the index when it is not the server's own, 
 tape or volume when an inventory placed it. A grey note under *Check Archive* says how
 many were found which way.
 
-**Imported volumes.** P5's *Imported-Volumes* index shows each imported volume in the P5
-web app as a folder named `‹VolumeName›-‹uuid›` with the original `Volumes/…` path
-underneath. That folder only groups the media: P5 stores the path **without** it —
-confirmed on a live server, where every lookup that included it failed and every
-lookup without it succeeded. P5's REST API also cannot list folders inside that index,
-so the reliable routes are a TSV inventory or P5 Archive Browser's catalogue, which name
-each file's archived path directly. If you do use *Settings ▸ Imported volumes*, paste
-each volume's folder as P5 web shows it (`‹VolumeName›-‹uuid›`; a pasted full location
-is cut down to that). For a first restore of imported media, use **Into a folder**:
-where P5 puts an original-location restore of imported media has not been verified.
+**Imported volumes.** P5's *Imported-Volumes* index is rooted at each imported volume's **label**,
+with the original `Volumes/…` path underneath. The P5 web app may show that folder as
+`‹VolumeName›-‹uuid›`, but the uuid is not part of the name the REST API accepts, and the folder
+only groups the media: `/archive/entries` wants the path **without** it, and every lookup that
+included it failed on a live server. A listing does work from the plain label
+(`inventory/‹Label›/Volumes/…`), but the index root and `Volumes` are 404, and P5 does not list the
+labels.
+
+To give the app the labels, use **Find imported volumes…**, in the *Imported volumes* box of Search
+options in the Restore window, or in *Settings ▸ Imported volumes*. It tries each volume's label as
+a top-level name in the index and lists the ones the index answers for, with the folders inside; it
+only reads, and it has a Stop button. Tick the ones you want and add them. A label with no volume
+record cannot be found that way, so **Add names by hand** takes a pasted list and checks each name
+against the index. A label two volumes share is flagged. A pasted `‹VolumeName›-‹uuid›` counts as
+the same volume as its plain label.
+
+Finding an item does not need the labels: `/archive/entries` looks up an exact path with no root.
+The labels are used by the rule-based pass, and to list a volume. The TSV inventory and P5 Archive
+Browser's catalogue name each file's archived path directly. To check through the REST API alone,
+turn both of those off in Search options. For a first restore of imported media, use **Into a
+folder**. Prepare Restore and Restore into a folder work on items found by these routes (verified
+live); where P5 puts an *original-location* restore of imported media has not been verified.
 
 **RED footage.** A RED clip is a `.RDC` folder of `_001.R3D`, `_002.R3D`… segments, and
 timelines name only `_001.R3D`. Restoring just that file gives a clip that stops after
