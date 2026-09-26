@@ -67,5 +67,5 @@ results or attaching diagnostic logs.
 
 ## Known limitations
 
-
+- `.p5a` and `.p5c` stub verification is a separate future feature and is not included in this release.
 - Archive-to-P5 remains beta and should be tested only with a disposable plan.
