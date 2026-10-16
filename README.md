@@ -190,3 +190,9 @@ The JSON format matches the other P5 utility apps: `{ "servers": [{ "alias", "ho
 
 ## 2026 code.matx.ca - P5 Archive Tools for macOS & iOS
 [For feedback, reach out via GitHub](https://github.com/macvfx) and [Support this project by optional donation](https://www.paypal.com/ncp/payment/MC6DRWQTYG4NY)
+
+## License
+
+Free to use for your own business or work, including on client jobs. You may not sell,
+redistribute or sublicense the software. The terms are the
+[PolyForm Internal Use License 1.0.0](LICENSE).
