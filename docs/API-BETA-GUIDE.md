@@ -1,14 +1,13 @@
 # P5 Archive Manager API · User Guide
 
-**v4.3.0 build 45 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.3.3 build 58 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
 
 > ⚠️ **Beta — test only.** **Back up your data first.** Delete and Archive are real,
-> destructive actions, and the Archive-to-P5 write is still **unproven against live
-> servers**. Provided **as-is, with no warranty of any kind**. Test on disposable data
-> and verify the receipts before trusting it with real projects.
+> destructive actions. Provided **as-is, with no warranty of any kind**. Test on
+> disposable data and verify the receipts before trusting it with real projects.
 
 Testers focusing on the new storage workflow should use the
 **[v0.8 Phase 1 tester notes](API-BETA-V0.8-TESTER-NOTES.md)**.
@@ -146,28 +145,35 @@ the whole project history.
   - `＋ not archived` — P5 doesn't have it
   - `↪` marks a symlink
 
-### Delete (verify-first chain)
-The **Delete** button lives in the right column, under the tape pills. It appears only
-when there are `exact`/`close` (proven-archived) files. Clicking it does **not** delete
-immediately — it opens a **verify-first** dialog so deletion is always a deliberate step:
+### Delete and Archive — the app's two main actions (4.3.2)
+Delete and Archive sit together in the right column, under the tape pills, with equal
+visual weight (red and blue) — Delete cleans up what's already archived, Archive gets
+the rest archived so it, too, can be deleted later.
 
-1. **Deep verify entire P5 folder first** — run a full scan to double-check before
+### Delete
+The **Delete** button appears only when there are `exact`/`close` (proven-archived)
+files. Clicking it does **not** delete immediately — it opens a confirmation sheet
+(what will happen, the files in scope, proof-of-archive links, and typing **DELETE** to
+confirm) so deletion is always a deliberate step:
+
+1. **Deep verify entire P5 folder** — run a full scan to double-check before
    committing (see Deep verify below).
 2. **Open receipts folder** — review past deletion receipts.
-3. **Delete N files (size) now** — the irreversible action (red).
+3. **Type DELETE** to enable the delete button, then confirm — the irreversible
+   action (red).
 4. **Cancel.**
 
 **Proof BEFORE delete.** A **proof report is written before anything is deleted** — both
 a **CSV** and a human-readable **TXT** listing every file with its disk size/dates vs P5
 size/archive-date/volume/barcode and verdict, plus a **NOT ARCHIVED** section. You can
-also write it any time with **Save proof report (CSV + TXT)** without deleting. All
+also write it any time with the **export icon in the toolbar** without deleting. All
 reports + receipts live in
 `~/Library/Application Support/P5ArchiveManagerAPI/Receipts/`.
 
 When you proceed, it deletes **only** the verified files and **re-checks each file's
 existence and size right before removing it** (anything changed since the check is
 skipped and logged). It then writes a **deletion receipt** (in-app entry + `.md`) —
-**Open last receipt** (under Delete) reveals it.
+**Open receipts folder** (main window) reveals it.
 
 **One-shot + auto re-check.** Once you delete, the Delete button **disables** (greys out,
 relabels "Deleted — re-check to act again") so the same result can't be deleted twice, and
@@ -178,9 +184,16 @@ Recommended chain: **Check → (Deep verify) → review provenance → Save proo
 receipt.**
 
 ### Archive (the not-archived)
-- When a check finds not-archived files, an **Archive** panel appears.
-- **Load archive plans & clients**, pick a **Plan** + **Client**, then **Archive N files…**
+- When a check finds not-archived files, an **Archive** button appears right under
+  Delete — the same weight, blue instead of red.
+- Clicking it opens a confirmation sheet (mirroring Delete's own): **Load archive
+  plans & clients**, pick a **Plan** + **Client**, then **Archive N Files**.
 - Submits them to P5 and monitors the job briefly.
+- **Filenames with emoji or other characters outside the Unicode Basic Multilingual
+  Plane (4.3.3) can't be archived through P5's REST connection at all** — a confirmed
+  P5 server limitation, not something this app can work around. The confirmation
+  sheet lists any such file and leaves it out of the submission; everything else in
+  the same folder archives normally. Use P5's own desktop client for a flagged file.
 - **Named job + manifest (v0.5):** the job is submitted with the **full source folder path**
   as its title, so it appears in the **P5 job monitor** as the folder (not a generic "REST
   Archive job"). The accepted files (`path → P5 handle`) are recorded in the saved
@@ -211,10 +224,12 @@ receipt.**
   not-archived, the job is likely still finishing; re-check again a moment later.
 
 ### Deep verify (paranoid)
-- **Deep verify — entire P5 folder** (the button under Delete, or the first option in the
-  Delete dialog) does a full recursive walk of *everything* P5 has under the path,
-  listing it all with your on-disk files **highlighted**. It's the belt-and-braces step
-  in the delete chain.
+- **Deep verify — entire P5 folder** (Tools ▸ Check Details, or the toolbar's list
+  icon — also offered as the first step of the Delete confirmation sheet) does a full
+  recursive walk of *everything* P5 has under the path, listing it all with your
+  on-disk files **highlighted**. Close size matches and the full file-provenance list
+  live in the same Check Details window (4.3.2) — the main window itself now shows
+  only Delete and Archive plus the not-archived/size-mismatch/possible-match lists.
 - **(v0.9)** It scans the server's **configured index** — or **every index** when *Search
   all archive indexes* is on, showing a per-index file count in the summary and labelling
   each entry with the index it was found in. While it runs, a live file count and running
@@ -371,19 +386,25 @@ job id added the moment P5 accepts it. A request that times out is reported as
 *delivery uncertain* — check P5's job list before submitting again, because a second
 submission is a second job.
 
-### Browse the index (Advanced tools)
+### Browse the index (Tools ▸ Browse Index…)
 
 Browse lists one level of an archive index at a time — the raw view of what P5 stores,
-with the raw JSON response underneath for diagnostics. Use it when a check result looks
-off and you want to see the index with your own eyes:
+with the raw JSON response underneath for diagnostics. It's its own window (4.3.2),
+reachable from the **Tools** menu. Use it when a check result looks off and you want
+to see the index with your own eyes:
 
-- **Browse checked path (v0.9)** starts at the P5 path from the check above (the jump
-  field is pre-filled after every check), so "go look at what P5 has there" is one click.
-- The **Index picker (v0.9)** chooses which archive index to list (defaults to the
+- **Roots (4.3.3)** jumps straight to a common starting point — `Volumes`, `mnt`, or
+  any imported-volume root you've configured for this server (Settings ▸ Sources ▸
+  Imported volumes) — instead of needing to already know the index's first path
+  segment. **Browse from root**, **Up**, jump-to-path and **Go** still navigate from
+  there; click a folder name to go into it.
+- The **Index picker** chooses which archive index to list (defaults to the
   server's configured index; switching re-lists the current folder) — handy for
   confirming which index a folder actually lives in. The diagnostics line names the
   index and full URL of every request.
 - Names P5 stores with caret-hex encodings (e.g. `\` as `^5c`) are navigable.
+- **Server Info** (also its own Tools-menu window) shows its own raw JSON response for
+  List clients / List archive plans now too (4.3.3), instead of it only appearing here.
 
 ---
 
@@ -406,6 +427,8 @@ off and you want to see the index with your own eyes:
 - **P5 Volumes / Barcodes** pills, populated live; **persistent volume→barcode cache**.
 - **Proof report (CSV + TXT)** — written before any delete and on demand.
 - **Delete with receipt** (guarded, re-verified, audited); **one-shot + auto re-check**.
+  Delete and Archive are the app's two main actions (4.3.2), each with its own
+  confirmation sheet.
 - **Historical archived locations (v0.10)** — per-server fallback list of older storage
   roots; a check with no hits automatically searches them in order and reports which
   location actually held the archived files.
@@ -413,11 +436,18 @@ off and you want to see the index with your own eyes:
   via **app menu ▸ Check for Updates…**. The 0.10.1 bridge follows final API `0.x` and
   future API `4.x` releases, including prereleases, while ignoring CLI `3.x`.
 - **Deep verify** full list with on-disk highlight; honours *Search all archive indexes*
-  with per-index counts and live progress (v0.9).
+  with per-index counts and live progress (v0.9). Lives in the **Check Details** window
+  (4.3.2) alongside close size matches and full file provenance.
 - **Browse** the archive index + **raw JSON** viewer (diagnostics) — with an **index
-  picker** and **Browse checked path** to start exploring at the folder you just
-  checked (v0.9).
-- **Server info**: clients & plans (with names), volume-cache size + Clear.
+  picker** and a **Roots menu** (4.3.3: `Volumes`, `mnt`, or configured imported-volume
+  roots) to start exploring without guessing the first path segment.
+- **Server info**: clients & plans (with names), volume-cache size + Clear, and its own
+  raw JSON response disclosure (4.3.3).
+- **Non-BMP filename detection (4.3.3)** — a file whose name contains an emoji or other
+  character P5's REST connection can't address is flagged and excluded from an Archive
+  submission, instead of failing the job or silently vanishing from one.
+- **Settings is a sidebar of tabs (4.3.2)** — Servers, Sources, Archiving, Receipts &
+  Mirror, General, Diagnostics & Logs, About — instead of one long scrolling form.
 - **Restore from project file (4.2)** — XML, FCPXML, FCPXMLD, DRT or a path list →
   each item's archive status and original location → one restore job, with versions,
   tapes, the whole-RED-clip rule, TSV inventories and imported volumes. See *Restore from
@@ -432,8 +462,8 @@ off and you want to see the index with your own eyes:
   it as `^5c`) are correctly recognised as archived, not falsely "not archived". *(v0.6.1:
   the Browse inspector can also navigate into backslash folders.)*
 - **Session logs & diagnostics** — every API call, archive job step and error is written
-  to a per-launch log; verbose on by default (Settings ▸ Diagnostics). *Receipts, audit &
-  logs ▸ Zip logs to Desktop* bundles them for support (see **§6 Troubleshooting**).
+  to a per-launch log; verbose on by default (Settings ▸ Diagnostics & Logs).
+  **Tools ▸ Zip Logs to Desktop** bundles them for support (see **§6 Troubleshooting**).
 
 ---
 
@@ -448,8 +478,9 @@ Please exercise these and report back (issues / what worked):
   nsdchat app and this beta; archived vs not-archived counts should agree.
 - **Full delete chain on a throwaway folder** — check → proof report → delete → receipt;
   confirm the receipt is accurate and P5 still holds the files.
-- **Archive submit on a disposable plan** — the **first live write**, still unproven;
-  confirm the job runs and a re-check shows the files archived.
+- **Archive submit on a disposable plan** — confirmed working live (every submitted
+  file archived and deleted successfully across several runs); confirm the job runs
+  on your own server and a re-check shows the files archived.
 - **Job title + manifest (v0.5)** — after an archive, confirm the **P5 job monitor shows
   the source folder path** (not "REST Archive job"), and the saved `archive-…-job.log`
   lists each `path → handle`.
@@ -470,11 +501,14 @@ Please exercise these and report back (issues / what worked):
 
 Known caveats:
 
-- **Archive the not-archived** is the **first write to your P5 server** and is **unproven
-  against a live server**. Test on a **disposable/test archive plan** first. It submits
-  the **local absolute paths**; those must be valid on the **client** you select.
+- **Archive the not-archived** writes to your P5 server — confirmed working live, but
+  test on a **disposable/test archive plan** first. It submits the **local absolute
+  paths**; those must be valid on the **client** you select.
 - **Delete is real/destructive** — test on a **throwaway folder** first and check the
   receipt before using on real projects.
+- **Filenames with emoji or other non-BMP characters can't be archived through P5's
+  REST API at all** — a confirmed P5 server limitation (not this app). The Archive
+  sheet flags and excludes them; everything else in the folder archives normally.
 - **Size tolerance = 64 KB** for "close" (the provenance list shows the exact Δ).
 - **Sub-directory case:** only the *base* path is case-corrected; nested folders use the
   disk's casing, so a nested folder whose case differs from P5 may show as not-archived.
@@ -497,22 +531,22 @@ If something doesn't work — most commonly **"I archived files but nothing happ
 the app keeps a detailed log you can send for diagnosis.
 
 1. **Reproduce the problem** (e.g. select the plan + client and run the archive again).
-2. **Receipts, audit & logs ▸ Zip logs to Desktop.** This bundles the session logs into
+2. **Tools ▸ Zip Logs to Desktop.** This bundles the session logs into
    `P5ArchiveManager-logs-<date>.zip` on your Desktop and reveals it in Finder.
 3. **Email the zip** to support.
 
 What's in the log:
 
-- Every P5 API call and any network/curl error.
+- Every P5 API call and any network error.
 - The full archive sequence: the submit request, P5's raw response, the **job ID**, each
   status poll, and the final result — including a clear line if no job was created (the
   usual cause of "it didn't archive").
 - No passwords are ever written to the log.
 
-**Verbose logging is on by default** (Settings ▸ Diagnostics), so the first report already
-has full detail. If logs get large during big **Deep verify** scans you can turn verbose
-off there — archive activity and errors are still always logged. *Reveal logs* opens the
-folder if you'd rather attach files yourself.
+**Verbose logging is on by default** (Settings ▸ Diagnostics & Logs), so the first report
+already has full detail. If logs get large during big **Deep verify** scans you can turn
+verbose off there — archive activity and errors are still always logged. **Tools ▸
+Reveal Logs** opens the folder if you'd rather attach files yourself.
 
 ---
 
