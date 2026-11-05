@@ -123,6 +123,24 @@ It enumerates the files **on disk** and asks P5 only about the directories that 
 them — so a folder with a few files left checks in a moment, even if the archive holds
 the whole project history.
 
+#### Still nothing? Check tries Restore's own engine (4.4)
+
+P5's REST API has no way to search by name or relative path — only an exact-path lookup
+or a one-level listing. A label-rooted index such as Imported-Volumes, or media moved
+before archiving into an unnamed wrapper folder, can defeat every path-based attempt
+above even when historical locations are set up correctly, because none of it is a path
+problem.
+
+When the current path *and* every historical location find nothing, Check builds a path
+list of every local file and runs it through **Restore from Project File's own engine**
+— the same TSV/P5 Archive Browser search by name, imported-volume label prefixes, and
+relocated-media walk described under *How each item is found*, below — then folds the
+per-file results back into this window's result. It uses whatever Restore is already
+configured to use (Settings ▸ TSV inventories, ▸ Imported volumes); nothing extra to set
+up. The result says so when this is how it was found. **Tools ▸ Check Folder (via
+Restore Search)…** (just below) runs that same engine directly, on demand, which is
+faster when you already expect to need it.
+
 ### Read the result
 
 > **The check is disk-driven.** It compares the files **on disk** to P5, so the counts are
@@ -272,6 +290,13 @@ editor exported and the app works out which media it needs.
 
 P5's own *media list* restore takes an XML or FCPXML directly, but not an `.fcpxmld`
 or a `.drt`, and it does not know about RED clips.
+
+**Tools ▸ Check Folder (via Restore Search)…** (4.4) builds a `.txt` path list for you:
+pick a folder and it's enumerated and opened here already loaded — this is the route
+for a label-rooted index such as Imported-Volumes, which the plain Check can't search.
+Every file is checked individually (RED clip segments included, rather than folded
+into one item the way a timeline is), and a `.p5c`/`.p5a` stub placeholder named in the
+list is checked under the real file it stands for, with a badge on the row.
 
 1. **Pick the server** at the top of the window. Paths from the project go through that
    server's **path mappings**, exactly as a dropped folder does.
