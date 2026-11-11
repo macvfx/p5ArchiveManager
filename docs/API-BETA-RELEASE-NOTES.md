@@ -12,7 +12,48 @@ confirm what's archived in P5, delete the proven-archived files, and archive the
 
 ---
 
-## 🆕 v4.3.0 build 45 — Find imported volumes
+## 🆕 v4.5.0 build 67 — Import your server list; site settings file
+
+Settings reads and writes the **`P5Servers.json`** file that P5 Health Check, P5 Archive
+Search and P5 Archive Overview use, so servers set up once are not typed in again. A file in
+`/Users/Shared` or Documents is offered when the app opens, showing which servers it would
+add before anything changes. For administrators, a **`P5SiteSettings.json`** supplies the TSV
+inventory folder, path mappings and historical locations, site-wide or per server; operators'
+own mappings stay editable, and Settings imports a site file into place or exports one from a
+Mac that is already set up. Full **[4.5.0 release notes](API-V4.5.0-RELEASE-NOTES.md)**.
+
+---
+
+## v4.4.0 build 62 — Check falls back to Restore's search engine
+
+When the current path and every historical location find nothing, Check now tries **Restore
+from Project File's** engine — TSV inventories, P5 Archive Browser's catalogue and
+imported-volume labels — so a folder P5 cannot locate by path alone is still found, with
+nothing new to configure. **Tools ▸ Check Folder (via Restore Search)…** runs the same search
+on demand. Full **[4.4.0 release notes](API-V4.4.0-RELEASE-NOTES.md)**.
+
+---
+
+## v4.3.4 build 59 — Stub-matched files now count as archived
+
+A folder whose local files are all `.p5c`/`.p5a` stub placeholders no longer reports that none
+of its files are archived: a stub P5 matches by name now counts toward the Archived total.
+Check Details and Deep Verify gained quick filters for long file lists. Full
+**[4.3.4 release notes](API-V4.3.4-RELEASE-NOTES.md)**.
+
+---
+
+## v4.3.3 build 58 — Delete and Archive are the two main actions
+
+Everything since 4.3.0 in one release: the main window and Settings redesigned around
+**Delete** and **Archive**, each with its own confirmation sheet; Browse, Server Info, Check
+History and Check Details under a **Tools** menu; a **Roots** menu in Browse Index; restoring
+directly from a P5 stub placeholder; and filenames containing emoji flagged and left out of
+archiving. Full **[4.3.3 release notes](API-V4.3.3-RELEASE-NOTES.md)**.
+
+---
+
+## v4.3.0 build 45 — Find imported volumes
 
 Media in an **Imported-Volumes** index is now found through the REST API alone, without the TSV
 inventories or P5 Archive Browser's catalogue: 53 of 53 items of a real project were found that
