@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "settings": {
+    "tsvInventoryFolder": "/Volumes/ExampleShare/P5 Inventories",
+    "searchAllIndexes": true,
+    "blockDeletePlans": true
+  },
+  "pathMappings": [
+    { "localPrefix": "/Volumes/ExampleShare", "p5Prefix": "mnt/Example/Share" }
+  ],
+  "historicalRoots": [
+    "Volumes/ExampleOld/Projects"
+  ],
+  "servers": [
+    {
+      "host": "p5-primary.example.invalid",
+      "archiveIndex": "Default-Archive",
+      "pathMappings": [
+        { "localPrefix": "/Volumes/ExampleShare/Finishing", "p5Prefix": "mnt/Example/Finishing" }
+      ],
+      "historicalRoots": [],
+      "importedVolumesIndex": "Imported-Volumes",
+      "importedVolumeRoots": ["EXAMPLE01"]
+    }
+  ]
+}

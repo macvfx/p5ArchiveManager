@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.3.3 build 58 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.5.0 build 67 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -52,6 +52,114 @@ the check runs against. Its connection row distinguishes **Connected** (green, w
 latency and last-test time), **Authentication failed** (orange), **Server unreachable**
 (red), and **Not tested** (gray). Use **Retest** after changing networks or server
 settings. Re-open Settings any time to edit or add servers.
+
+#### Import a server list (4.5)
+
+If your servers are already set up in P5 Health Check, P5 Archive Search or P5 Archive
+Overview, you do not need to type them in again. Those apps share a file named
+`P5Servers.json`.
+
+- **Settings ▸ P5 Servers ▸ Import Servers JSON…** — choose the file. Servers you do not
+  have are added; ones already configured are skipped. Two entries count as the same
+  server when host, port and username match, so renaming a server does not bring it back.
+- **Export Servers JSON…** — saves this app's servers in the same format. The file holds
+  host, port, protocol, username, API version and archive index. It never holds passwords,
+  pinned certificates or path mappings.
+- **At launch**, the app looks for `/Users/Shared/P5Servers.json` and `P5Servers.json` in
+  your Documents folder. If one lists servers you do not have, a sheet shows the file's
+  path and each server marked *New* or *Already configured*:
+  - **Add New Servers** adds them.
+  - **Not Now** asks again the next time the app opens.
+  - **Ignore This File Version** stops asking until the file's contents change.
+
+  Nothing is added without your choice.
+- **After importing**, select each new server and save its **Password**. An HTTPS server
+  also needs its certificate reviewed, as for a server entered by hand.
+- On a new install, the blank "Default" server is replaced by the first import. Once you
+  have edited it, it is kept.
+
+#### Site settings file (4.5) — for administrators
+
+One file can supply the settings that otherwise have to be typed into Settings on every
+Mac: where the TSV inventories are, the path mappings, the historical locations. The app
+reads the file and does not change it; the one exception is **Import Site Settings JSON…**,
+below, which replaces it when you confirm. Deliver it however you deliver files (Munki, a
+script, a copy) or import it on the Mac.
+
+**Location:** `/Users/Shared/P5SiteSettings.json`. A complete example is in
+[`examples/P5SiteSettings.example.json`](examples/P5SiteSettings.example.json). Every part is optional.
+
+**Putting a file in place on this Mac.** **Settings ▸ General ▸ Site settings ▸ Import Site
+Settings JSON…** — choose a file from anywhere. The app checks that it is a site settings
+file, shows what it holds and where it will go, and on your confirmation copies it to the
+location above (replacing a file already there) and loads it at once. A server list chosen
+by mistake is refused. The button is disabled on a Mac where a configuration profile sets
+the file's location or mode, since the organisation delivers the file there.
+
+**Making the file from a Mac that is already set up.** **Settings ▸ General ▸ Site settings ▸
+Export Site Settings JSON…** writes one from the current configuration:
+
+- the TSV inventory folder and the current value of every on/off setting;
+- one entry per server, with its archive index, path mappings, historical locations and
+  imported volumes;
+- with two or more servers, any mapping or historical location they *all* have is written
+  once at the top, as site-wide.
+
+Passwords, pinned certificates and server names are not written. Edit the file before
+deploying it: remove any setting the site should not decide, and move a rule to the top
+level by hand if it should apply everywhere. Pair it with **Export Servers JSON…**, since
+a site file adds settings to servers but does not create them.
+
+| Part | What it does |
+|---|---|
+| `settings` | App settings by name — see the list below. |
+| `pathMappings` (top level) | Path mappings applied to **every** server. |
+| `historicalRoots` (top level) | Historical archived locations tried for **every** server. |
+| `servers` | Additions for one server: `archiveIndex`, more `pathMappings` and `historicalRoots`, `importedVolumesIndex`, `importedVolumeRoots`. |
+
+A `servers` entry needs a `host`. Add `port` and `username` to narrow it to one
+connection; the entry that names the most wins. An entry does not create a server — add
+the server in Settings or import it from `P5Servers.json`.
+
+**Setting names** (`settings`): `tsvInventoryFolder` (text), and these on/off values —
+`searchAllIndexes`, `blockDeletePlans`, `tagSourcePath`, `autoCheckAfterDrop`,
+`verboseLogging`, `restoreWholeRedClips`, `projectRestore.searchAllIndexes`,
+`projectRestore.useBrowserCatalog`, `projectRestore.listImportedVolumes`,
+`projectRestore.useTSVInventories`. On/off values are `true` or `false`, without quotes.
+
+**How site values combine with yours**
+
+- *Path mappings, historical locations, imported volumes:* added to yours, never replacing
+  them. In **Settings ▸ Sources** yours stay editable and the site's appear beneath, marked
+  with a lock. Both are used; the longest matching prefix still wins.
+- *Archive index:* while the file gives a server an archive index, that one is used.
+  Settings shows a note under the field.
+- *Settings:* by default they are **suggestions**. A value applies if you have not set that
+  setting, and follows later changes to the file, until you choose something else — after
+  that your choice stays.
+
+**Holding settings.** Two preferences, set by a configuration profile for
+`misterx.P5-Archive-Manager-API` or with `defaults write`:
+
+| Key | Value |
+|---|---|
+| `P5SiteSettingsMode` | `seed` (default, suggestions) or `enforce` (held: put back on every reload, and disabled in Settings with a lock) |
+| `P5SiteSettingsPath` | Full path to the file, if it is not at the default location |
+
+A profile can also lock one setting directly by forcing its preference key — for example
+`p5.blockDeletePlans` set to true. That setting shows "Managed by your organisation".
+
+To try it at a desk without a profile:
+
+```
+defaults write misterx.P5-Archive-Manager-API P5SiteSettingsMode enforce
+```
+
+**Checking it.** **Settings ▸ General ▸ Site settings** shows the file's location, whether
+it loaded and what it supplied, whether settings are suggested or held, and any name in the
+file the app did not recognise (a misspelt setting is ignored, and listed there). The file
+is re-read when the app opens, when it comes to the front, and when Settings opens, so
+replacing it needs no relaunch.
 
 **Help & welcome guide.** On first launch the main window shows a short welcome panel.
 The **Help** menu has **P5 Archive Manager Help** (⌘?) — getting-started steps and an
@@ -436,6 +544,12 @@ to see the index with your own eyes:
 ## 4. Feature list (working)
 
 - **Multi-server** manager in Settings (⌘,); per-server Keychain password; Test Connection.
+- **Server list import and export (4.5)** — reads and writes the `P5Servers.json` shared
+  with the other P5 apps; a file in `/Users/Shared` or Documents is offered for review at
+  launch. No passwords in the file.
+- **Site settings file (4.5)** — `/Users/Shared/P5SiteSettings.json` supplies the TSV
+  inventory folder, site-wide and per-server path mappings and historical locations;
+  settings are suggested or, with a profile key, held. Import and export from Settings.
 - Main-window **P5 connection status** with latency, last-tested time, Retest, distinct
   authentication/unreachable states, and a required connectivity preflight.
 - Fast **local-driven** disk-vs-P5 check (queries only relevant directories).
