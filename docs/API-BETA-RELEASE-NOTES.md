@@ -1,13 +1,16 @@
-# P5 Archive Manager API — 0.x history and transition to v4
+# P5 Archive Manager API — release history
 
-The REST API implementation of P5 Archive Manager is moving to **v4** after the final
-`0.10.1+24` bridge. It talks to the
-**Archiware P5 REST API v8** — no `nsdchat` dependency. Same job as the shipping app:
-confirm what's archived in P5, delete the proven-archived files, and archive the rest.
+Every release of the REST API edition of P5 Archive Manager, newest first: the current
+**4.x** line, then the **0.x** betas it grew out of and the `0.10.1+24` bridge between
+them. The app talks to the **Archiware P5 REST API v8** — no `nsdchat` dependency — and does
+the same job as the CLI edition: confirm what's archived in P5, delete the proven-archived
+files, and archive the rest.
 
-> ⚠️ **Beta — test only.** Back up your data first. **Delete and Archive are real,
-> destructive actions**, and the Archive-to-P5 write is still unproven against live
-> servers. Provided **as-is, with no warranty**. Test on disposable data and verify the
+> ⚠️ **Still a beta — test only.** Back up your data first. **Delete and Archive are real,
+> destructive actions.** Archive-to-P5 has been confirmed working against a live server, but
+> test on a disposable plan first. For Restore, use **Restore into a folder** on a P5 client
+> before restoring to the original location, which has not yet been exercised against a live
+> server. Provided **as-is, with no warranty**. Test on disposable data and verify the
 > receipts before trusting it with real projects.
 
 ---
