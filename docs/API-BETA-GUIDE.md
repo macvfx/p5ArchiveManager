@@ -249,6 +249,89 @@ up. The result says so when this is how it was found. **Tools ▸ Check Folder (
 Restore Search)…** (just below) runs that same engine directly, on demand, which is
 faster when you already expect to need it.
 
+### What 4.6.1 added to Check
+
+**"Could not connect" but the server is fine.** The message now includes the reason macOS gave. If it
+says *no route to host* and a browser can reach the server, macOS is probably blocking the app's
+access to the local network: choose *Open Local Network Settings* (or open System Settings ▸ Privacy &
+Security ▸ Local Network), switch P5 Archive Manager API off and on, and reopen the app. *Connection
+refused* instead means nothing is listening at that address and port.
+
+**Archived from a different storage.** If a folder dropped from one storage was archived from
+another — say it is on `/Volumes/SAN/Projects/2017/Show` but P5 holds it under
+`Volumes/NAS/Projects/2017/Show` — add a path mapping for each storage in Settings ▸ Sources
+(for example `/Volumes/SAN → Volumes/SAN` and `/Volumes/NAS → Volumes/NAS`). When nothing is found
+at the dropped path, Check swaps the storage root and keeps the rest of the path: the same relative
+path under every other mapped storage first, then the dropped path's trailing folders (year and
+project, then the project alone) under each historical location and mapping. You never add a year
+folder to a mapping. Check Details ▸ *How this was determined* lists every location tried.
+
+**Check Details is a summary with a window per part.** Open it from **Tools ▸ Check Details…** (or the
+toolbar's list icon): it shows the counts for the last check and a button for each part — *How this
+was determined*, *File provenance*, *Close size matches*, *Size mismatches*, *Extra proof — entry handles*
+and *Deep verify* — each of which opens in its own window, so a long list never holds up the others.
+The file lists are shown a page at a time (200 rows) with a name filter; the complete list is in the
+proof CSV.
+
+**Where each file was found, and why.** Check Details ▸ *How this was determined* lists every
+path-mapping rule (applied or not) and every P5 location the check looked in, in order, with
+the result. The same text is at the top of the proof report, which is now saved as soon as a
+check finishes — you don't have to delete to get it. If a folder was archived from a different
+storage, add that storage's mapping in Settings: its P5 side is tried as another location, and
+only for files not already found.
+
+**Handles (optional extra proof).** In Check Details, *Get handles & extra proof* asks P5 for
+each archived file's entry handle and what P5 holds for it — instances, archive times, tapes
+and barcodes. It adds a request or two per file, so it is on request (or switch on *Always get
+handles after a check* here or in Settings ▸ Archiving ▸ Extra proof). A handle is shown only when P5 itself confirms it; with a TSV
+inventory folder set in Settings you get the handle P5 minted at archive time. Run it before
+you delete: the deletion receipt includes the handle only if it was fetched first.
+
+**When handles are short.** Once a handles run finishes, Check Details ▸ Extra proof — entry handles
+keeps the result and the time it took, and lists any archived files P5 did not confirm a handle for,
+grouped by why (P5 does not list the path; P5 returned a handle it does not recognise; the run was
+stopped first), each with what to do next. *Retry these* asks again for just those files, so a retry
+takes seconds, not the whole run. *Copy the list*, *Show proof report* and *Show session logs* are
+beside it. A file without a handle is not "not archived": the check's match stands, the handle is a
+separate second confirmation.
+
+**Tapes you can no longer read.** Settings ▸ Archiving ▸ *Tapes this server can no longer read — per
+server* has a tick box for each LTO generation (LTO-1 … LTO-9). A library tape's barcode ends in its
+generation (`…L6` is LTO-6), and a file whose only copy sits on a ticked generation is **not counted
+as archived** and is **never offered for deletion**; the result says how many, how big, and why
+(the orange box under the result, and *On unreadable tape* in the file list). A file with a readable
+copy anywhere stays archived. Volumes with no barcode (disk, cloud, a tape in a standalone drive)
+count as readable. The basic check only knows the one volume the listing names, so those files say
+*other copies not checked*: *Check the other copies* in the handles window asks P5 for every copy, and
+a file with a readable second copy is freed. Changing the setting re-judges the current result at once,
+without asking P5 anything. The proof CSV has a *Not Counted (unreadable media)* column.
+
+These files join the **Archive** action: the blue button counts them with the files not in P5, the orange
+box has *Archive them again…*, and the archive sheet has a checkbox (on by default) to include them. The
+old copies stay in P5. The **Delete** sheet lists them as not deleted. After archiving, run *Check Entry
+handles* so the new copy on a readable tape frees them — the basic check only sees one tape per file.
+
+**Temporary files.** Settings ▸ Archiving ▸ *Temporary files* has *Ignore known temporary files in a
+check*, off by default. Office keeps a lock file (`~$Budget.docx`) next to a document while it is open,
+and Windows leaves `Thumbs.db` and `desktop.ini`; none is project content, but each reads as "not
+archived" and keeps *Safe to delete* off. With the option on, the next check leaves out `~$*`,
+`~WRL*.tmp`, `Thumbs.db` and `desktop.ini` and nothing else. They are listed under the result (with why,
+and their total size), in the proof report's *IGNORED TEMPORARY FILES* section and in the session log, are
+counted nowhere, and are never deleted. Hidden files and `.DS_Store` are always skipped.
+
+**Choosing which indexes are searched.** Settings ▸ Archiving ▸ *Search other archive indexes — per
+server* has one control for the server shown: *This index only* (the server's configured index),
+*All indexes* (every index P5 lists), or *Only the ones I choose*, which asks P5 for its indexes and
+lets you tick them (the configured index is always searched first). A sentence under the control says
+what a check will do. A server that has not chosen follows the older app-wide setting, so nothing
+changes until you pick. Under *Last-resort search* you can switch the slow Restore engine off, or
+choose which of its sources (TSV inventories, P5 Archive Browser's catalogue, imported-volume listing)
+it uses.
+The search also has a **time limit** (default 10 minutes; 0 for none): when it passes, Check stops
+and the files it did not get to are shown as not checked — never as not archived — with a note
+saying so. Stop works at any time. Progress shows elapsed time and, once it has enough to go on,
+an estimate of the time left.
+
 ### Read the result
 
 > **The check is disk-driven.** It compares the files **on disk** to P5, so the counts are
@@ -259,7 +342,9 @@ faster when you already expect to need it.
 > check matches 0 files, pointing you to these tools.)*
 
 - **Total files / Archived / Size** — for the files on disk.
-- **Not archived / Needs archiving** — on disk but not in P5.
+- **Not archived / Needs archiving** — on disk but not in P5. *Needs archiving* also includes
+  files found in P5 only on tapes you can no longer read; they have their own orange
+  **Unreadable tape** count beside *Not archived*.
 - **P5 Volumes / P5 Barcodes** (right-hand pills) — the tapes the files live on; volumes
   show `label · location · media type` where P5 reports them.
 - **File provenance — disk vs P5 proof** — per file: disk size + mod date vs P5 size +
@@ -315,6 +400,11 @@ receipt.**
 - Clicking it opens a confirmation sheet (mirroring Delete's own): **Load archive
   plans & clients**, pick a **Plan** + **Client**, then **Archive N Files**.
 - Submits them to P5 and monitors the job briefly.
+- **Files only on unreadable tapes (4.6.1).** When a server has LTO generations ticked as
+  unreadable (Settings ▸ Archiving), files whose only copy is on one are counted in the button
+  and the sheet shows a checkbox, on by default, to archive them again. Untick it to archive only
+  the files not in P5. The Delete path never includes them. After archiving, the automatic
+  re-check is the full check, with every mapped storage and historical location.
 - **Filenames with emoji or other characters outside the Unicode Basic Multilingual
   Plane (4.3.3) can't be archived through P5's REST connection at all** — a confirmed
   P5 server limitation, not something this app can work around. The confirmation
@@ -544,6 +634,14 @@ to see the index with your own eyes:
 ## 4. Feature list (working)
 
 - **Multi-server** manager in Settings (⌘,); per-server Keychain password; Test Connection.
+- **Archived from several storages (4.6.1)** — a partial match is completed from every other
+  mapped storage and historical location; *How this was determined* shows each step.
+- **Tapes you can no longer read (4.6.1)** — per-server LTO generations whose files are not
+  counted as archived, are never deleted, and are offered to Archive again.
+- **Entry handles with next steps (4.6.1)** — grouped reasons, *Retry these*, kept time.
+- **Check Details as a summary plus a window per part (4.6.1)**; lists paged; proof report
+  written as soon as a check finishes.
+- **Optional ignore of known temporary files (4.6.1)**, off by default, every ignored file listed.
 - **Server list import and export (4.5)** — reads and writes the `P5Servers.json` shared
   with the other P5 apps; a file in `/Users/Shared` or Documents is offered for review at
   launch. No passwords in the file.

@@ -15,7 +15,19 @@ files, and archive the rest.
 
 ---
 
-## 🆕 v4.5.0 build 67 — Import your server list; site settings file
+## 🆕 v4.6.1 build 84 — Archived from several storages; tapes you can't read; big folders
+
+A folder archived from several storages is now found whole: each storage's root is swapped in with
+the rest of the path kept, and **How this was determined** lists every location tried. **Tapes you
+can no longer read** (Settings ▸ Archiving, per server) are not counted as archived, never deleted,
+and are offered to Archive again. The entry-handles window groups what P5 did not confirm by reason,
+with a next step and a retry. Check Details is a window per part, folders of 26,000 files or more are
+no longer cut off, and known temporary files can optionally be ignored. Full
+**[4.6.1 release notes](API-V4.6.1-RELEASE-NOTES.md)**.
+
+---
+
+## v4.5.0 build 67 — Import your server list; site settings file
 
 Settings reads and writes the **`P5Servers.json`** file that P5 Health Check, P5 Archive
 Search and P5 Archive Overview use, so servers set up once are not typed in again. A file in
