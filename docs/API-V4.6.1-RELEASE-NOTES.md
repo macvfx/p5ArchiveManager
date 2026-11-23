@@ -1,6 +1,6 @@
-# P5 Archive Manager API 4.6.1 (build 84) — Archived from several storages, tapes you can't read, and big folders
+# P5 Archive Manager API 4.6.1 (build 85) — Archived from several storages, tapes you can't read, and big folders
 
-**Status:** Latest · **Date:** 2026-11-21
+**Status:** pre-release beta · **Date:** 2026-11-23
 
 ### A folder archived from several storages is found whole
 
@@ -65,6 +65,9 @@ LTO generation, for each server.
 
 ### Fixes
 
+- Deleting files from an SMB share no longer freezes the app. The delete ran on the main thread, so
+  every file check and removal on the network share stalled the window; it now runs in the
+  background and the progress counter keeps updating (build 85).
 - After you archive or delete, the automatic re-check now uses the full multi-storage check.
   Before, it looked only at the first path and the numbers fell sharply.
 - "Could not connect" now says why. If macOS is blocking local network access, there is a
@@ -85,3 +88,5 @@ The 4.6.0 builds were never released; everything since 4.5.0 ships in 4.6.1.
 4. Archive, then check the result again. The numbers should match the check you acted on.
 5. Turn on Ignore known temporary files, check a folder with a `~$` file, and confirm it is listed, not
    counted and not deleted.
+6. Delete archived files from a folder on an SMB share. The window should stay responsive and the
+   "Deleting n of N" counter should keep climbing.
