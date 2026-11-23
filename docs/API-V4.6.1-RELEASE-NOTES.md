@@ -1,4 +1,4 @@
-# P5 Archive Manager API 4.6.1 (build 89) — Archived from several storages, tapes you can't read, and big folders
+# P5 Archive Manager API 4.6.1 (build 91) — Archived from several storages, tapes you can't read, and big folders
 
 **Status:** pre-release beta · **Date:** 2026-11-23
 
@@ -77,6 +77,9 @@ LTO generation, for each server.
   Check Folder (via Restore Search) (build 86).
 - The ✕ beside the dropped folder now clears the previous folder's results too, not just the path
   (build 87).
+- **Size matching now follows how P5 reports sizes (build 91).** P5 lists a file's bytes *plus* a small per-file overhead, so an archived file is normally a few hundred bytes larger in P5 than on disk (empty file → 245 bytes, other files +257 in our testing; 178–710 bytes across 110 real matches) — expected, not a defect. A file matches when P5's size is equal or larger by up to 4,096 bytes; a disk file *larger* than P5's copy, or P5 larger by more than that, is a mismatch (the old fixed 64 KB allowance let a 1 KB file match a 60 KB one). A disk symlink now matches a P5 link entry. Rows show exact byte counts beside Finder-style sizes, with the signed difference, and the proof CSV gains a Size Difference column.
+- The Archive and Delete sheets always draw: Archive could open as a tiny blank square on the first click until you clicked again (build 90).
+- The main window's "Not archived" list can no longer show a count above an empty list or read "first 0" (build 90).
 - Check ▸ File provenance's All / Not archived / On unreadable tape filter no longer shrinks "All" to a sliver (build 89).
 - A check that loses P5 part-way no longer starts from nothing: slow or dropped requests are retried, a slowing server is eased off, and if P5 still cannot be reached **Resume Check** reads only the folders not yet read (kept for 30 minutes) (build 88).
 - The Delete sheet no longer turns back into the empty Type-DELETE sheet while the folder is re-checked after a delete or an archive (build 88).
@@ -114,3 +117,6 @@ The 4.6.0 builds were never released; everything since 4.5.0 ships in 4.6.1.
 11. Open Check Details ▸ How this was determined: it should open with "N of N files matched in P5" and the matched
     locations, with the places that held nothing in a collapsed group below. Open File provenance and confirm
     the All / Not archived / On unreadable tape filter shows all three choices.
+12. Open Check Details ▸ Size matches: it should explain that P5's size is normally a few hundred bytes larger. In File provenance every
+    row should show exact bytes and a difference such as +447 B. A file larger on disk than in P5 should be a size mismatch.
+13. Click Archive several times, including right after a check: the sheet should draw every time.

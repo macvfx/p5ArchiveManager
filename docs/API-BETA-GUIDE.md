@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.6.1 build 89 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.6.1 build 91 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -268,7 +268,7 @@ folder to a mapping. Check Details ▸ *How this was determined* lists every loc
 
 **Check Details is a summary with a window per part.** Open it from **Tools ▸ Check Details…** (or the
 toolbar's list icon): it shows the counts for the last check and a button for each part — *How this
-was determined*, *File provenance*, *Close size matches*, *Size mismatches*, *Extra proof — entry handles*
+was determined*, *File provenance*, *Size matches (P5 overhead)*, *Size mismatches*, *Extra proof — entry handles*
 and *Deep verify* — each of which opens in its own window, so a long list never holds up the others.
 The file lists are shown a page at a time (200 rows) with a name filter; the complete list is in the
 proof CSV.
@@ -377,11 +377,26 @@ the partial result.
 - **File provenance — disk vs P5 proof** — per file: disk size + mod date vs P5 size +
   archive date + volume/barcode (+ the **index** it was found in when searching all),
   with a verdict:
-  - `✓ exact` — byte-identical
-  - `≈ close` — within 64 KB (rounding/metadata; counted as archived)
-  - `⚠ size mismatch` — same name, different size (review; **not** deletable)
+  - `✓ exact` — P5's size equals the disk size (rare: see below)
+  - `✓ matched (+P5 overhead)` — P5's size is larger than the disk file by a small per-file
+    overhead, up to 4,096 bytes; counted as archived. **This is the normal result.**
+  - `⚠ size mismatch` — same name, but P5's size is larger by more than that, or the disk file is
+    *larger* than P5's copy (changed since it was archived) (review; **not** deletable)
   - `＋ not archived` — P5 doesn't have it
-  - `↪` marks a symlink
+  - `↪` marks a symlink; `✓ link matched` means P5 also holds it as a link entry (a link has no
+    bytes to compare, and P5's REST API does not expose where the link points)
+
+  **Why P5's size is a little larger — this is normal.** P5 stores every file with a small header
+  and its metadata and reports the total as the file's size. In our testing on a P5 8.0.6 server an
+  empty file is listed as 245 bytes and every other file as 257 bytes more than on disk
+  (0 B → 245, 1 B → 258, 5,120 B → 5,377, 10,000 B → 10,257, 5 MiB → 5,243,137). Across 110 files
+  matched in real proof reports the difference was always between 178 and 710 bytes — never zero,
+  and P5 was never smaller than the disk file. So an archived file is almost never byte-for-byte
+  equal, and a small positive difference is expected, including **+245 B on a zero-byte file**.
+  Every row shows both sizes in exact bytes with the difference (`+447 B`), and the proof CSV's last
+  column is that difference. **Units:** the app shows sizes the way Finder does (1 MB = 1,000,000
+  bytes); P5's web page shows MiB (1 MiB = 1,048,576 bytes), so the same file reads smaller there
+  (8,731,275 bytes is 8.7 MB in Finder and 8.33 MiB in P5). Comparisons always use exact bytes.
 
 ### Delete and Archive — the app's two main actions (4.3.2)
 Delete and Archive sit together in the right column, under the tape pills, with equal
@@ -476,7 +491,7 @@ receipt.**
 - **Deep verify — entire P5 folder** (Tools ▸ Check Details, or the toolbar's list
   icon — also offered as the first step of the Delete confirmation sheet) does a full
   recursive walk of *everything* P5 has under the path, listing it all with your
-  on-disk files **highlighted**. Close size matches and the full file-provenance list
+  on-disk files **highlighted**. Size matches and the full file-provenance list
   live in the same Check Details window (4.3.2) — the main window itself now shows
   only Delete and Archive plus the not-archived/size-mismatch/possible-match lists.
 - **(v0.9)** It scans the server's **configured index** — or **every index** when *Search
@@ -707,7 +722,7 @@ to see the index with your own eyes:
   future API `4.x` releases, including prereleases, while ignoring CLI `3.x`.
 - **Deep verify** full list with on-disk highlight; honours *Search all archive indexes*
   with per-index counts and live progress (v0.9). Lives in the **Check Details** window
-  (4.3.2) alongside close size matches and full file provenance.
+  (4.3.2) alongside size matches and full file provenance.
 - **Browse** the archive index + **raw JSON** viewer (diagnostics) — with an **index
   picker** and a **Roots menu** (4.3.3: `Volumes`, `mnt`, or configured imported-volume
   roots) to start exploring without guessing the first path segment.
@@ -779,7 +794,9 @@ Known caveats:
 - **Filenames with emoji or other non-BMP characters can't be archived through P5's
   REST API at all** — a confirmed P5 server limitation (not this app). The Archive
   sheet flags and excludes them; everything else in the folder archives normally.
-- **Size tolerance = 64 KB** for "close" (the provenance list shows the exact Δ).
+- **P5-overhead allowance = 4,096 bytes** for a size match (observed: 178–710). A file with unusually
+  heavy extended attributes could exceed it and show as a mismatch until reviewed; the provenance
+  list shows each exact difference.
 - **Sub-directory case:** only the *base* path is case-corrected; nested folders use the
   disk's casing, so a nested folder whose case differs from P5 may show as not-archived.
 
