@@ -1,4 +1,4 @@
-# P5 Archive Manager API 4.6.1 (build 87) — Archived from several storages, tapes you can't read, and big folders
+# P5 Archive Manager API 4.6.1 (build 88) — Archived from several storages, tapes you can't read, and big folders
 
 **Status:** pre-release beta · **Date:** 2026-11-23
 
@@ -75,6 +75,9 @@ LTO generation, for each server.
   Check Folder (via Restore Search) (build 86).
 - The ✕ beside the dropped folder now clears the previous folder's results too, not just the path
   (build 87).
+- A check that loses P5 part-way no longer starts from nothing: slow or dropped requests are retried, a slowing server is eased off, and if P5 still cannot be reached **Resume Check** reads only the folders not yet read (kept for 30 minutes) (build 88).
+- The Delete sheet no longer turns back into the empty Type-DELETE sheet while the folder is re-checked after a delete or an archive (build 88).
+- Check ▸ File provenance rows are no longer clipped on the left; the details wrap to the window (build 88).
 - **Clear** button beside Check Archive Status resets the folder and every result; during a check
   it becomes **Stop & Clear** (build 87).
 - After you archive or delete, the automatic re-check now uses the full multi-storage check.
@@ -102,3 +105,6 @@ The 4.6.0 builds were never released; everything since 4.5.0 ships in 4.6.1.
 7. Confirm a delete and watch the sheet: it should name each stage, show the progress bar and time left.
 8. After a check, press Clear (or the ✕ beside the folder): the status and counts should reset. During a check,
    press Stop & Clear and confirm the old result does not come back.
+9. Interrupt P5 part-way through a big check (or wait for a timeout): the window should say P5 is slow and retry, and if it
+   still fails offer Resume Check, which reads only the folders not yet read.
+10. After a delete, the sheet should stay on "Re-checking the folder…" until the re-check ends.

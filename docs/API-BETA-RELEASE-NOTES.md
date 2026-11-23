@@ -15,17 +15,17 @@ files, and archive the rest.
 
 ---
 
-## 🆕 v4.6.1 build 87 — Archived from several storages; tapes you can't read; big folders
+## 🆕 v4.6.1 build 88 — Archived from several storages; tapes you can't read; big folders
 
 A folder archived from several storages is now found whole: each storage's root is swapped in with
 the rest of the path kept, and **How this was determined** lists every location tried. **Tapes you
 can no longer read** (Settings ▸ Archiving, per server) are not counted as archived, never deleted,
 and are offered to Archive again. The entry-handles window groups what P5 did not confirm by reason,
 with a next step and a retry. Check Details is a window per part, folders of 26,000 files or more are
-no longer cut off, and known temporary files can optionally be ignored. Builds 85–87: deleting from an SMB
+no longer cut off, and known temporary files can optionally be ignored. Builds 85–88: deleting from an SMB
 share no longer freezes the window, the Delete sheet shows live progress (stage, bar, space freed, time
 left), other network-share waits no longer block the app, and a Clear button (Stop & Clear during a check)
-resets the folder and its results. Full
+resets the folder and its results. A check that loses P5 part-way retries slow requests, eases off a slowing server, and offers **Resume Check**, which reads only the folders not yet read. The Delete sheet no longer reverts to the confirmation prompt during the re-check, and File provenance rows are no longer clipped. Full
 **[4.6.1 release notes](API-V4.6.1-RELEASE-NOTES.md)**.
 
 ---

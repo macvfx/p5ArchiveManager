@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.6.1 build 87 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.6.1 build 88 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -332,6 +332,28 @@ and the files it did not get to are shown as not checked — never as not archiv
 saying so. Stop works at any time. Progress shows elapsed time and, once it has enough to go on,
 an estimate of the time left.
 
+#### Slow or lost connection — retry and Resume (4.6.1)
+
+A big folder takes hundreds of requests, so a P5 server that gets busy part-way can start
+answering slowly and then time out. The check copes in three steps:
+
+- **It eases off.** When a reply takes over 1.5 seconds the next request waits a moment, so a
+  struggling server is not driven to a stop.
+- **It retries.** A read that times out or is dropped is tried again on a fresh connection, up
+  to three more times (after 3, 10 and 30 seconds). The window says "P5 is slow to answer —
+  retrying…". Nothing that changes P5 (an archive submit) is ever retried.
+- **It lets you resume.** If every try fails, the check stops — it never carries on and calls
+  unchecked files "not archived" — but the folder listings already read are kept for 30
+  minutes. The window shows how many, with **Resume Check** (reads only the folders not yet
+  read) and **Start Over** (reads everything again). Resume applies only to the same server,
+  folder, P5 path and index option, and is dropped after 30 minutes, on **Clear**, or when a
+  normal check starts. A resumed result says so in its notes and the session log.
+
+**Starting over.** **Clear** beside *Check Archive Status* (or the ✕ in the drop area) resets
+the folder, the P5 path and every result. While a check is running the button becomes
+**Stop & Clear**, which stops the check and clears once it has finished; plain **Stop** keeps
+the partial result.
+
 ### Read the result
 
 > **The check is disk-driven.** It compares the files **on disk** to P5, so the counts are
@@ -385,6 +407,12 @@ When you proceed, it deletes **only** the verified files and **re-checks each fi
 existence and size right before removing it** (anything changed since the check is
 skipped and logged). It then writes a **deletion receipt** (in-app entry + `.md`) —
 **Open receipts folder** (main window) reveals it.
+
+**Progress.** After you type DELETE the sheet stays on screen and shows each stage — preparing
+(the proof report is written first), deleting, writing the receipt and audit log, re-checking
+the folder — with a progress bar, files removed and space freed so far, elapsed time and an
+estimate of the time left. Deleting from a network share is slow, one round trip per file, but
+the window stays responsive. The sheet cannot be dismissed while a delete is running.
 
 **One-shot + auto re-check.** Once you delete, the Delete button **disables** (greys out,
 relabels "Deleted — re-check to act again") so the same result can't be deleted twice, and
