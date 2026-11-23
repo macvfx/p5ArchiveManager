@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.6.1 build 88 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.6.1 build 89 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -273,9 +273,14 @@ and *Deep verify* — each of which opens in its own window, so a long list neve
 The file lists are shown a page at a time (200 rows) with a name filter; the complete list is in the
 proof CSV.
 
-**Where each file was found, and why.** Check Details ▸ *How this was determined* lists every
-path-mapping rule (applied or not) and every P5 location the check looked in, in order, with
-the result. The same text is at the top of the proof report, which is now saved as soon as a
+**Where each file was found, and why.** Check Details ▸ *How this was determined* opens with the
+answer — "1,737 of 1,737 files matched in P5, found at 2 locations" — then *Where files were
+matched*, each location led by its count of matched files and why it was tried. The places that
+were looked in and held nothing come after, in a collapsed *Looked in, nothing found* group, and
+the path-mapping rules (applied or not) in a collapsed group below that. In the main window the
+same answer is one grey line, "Matched at /… (1735) and 1 other location", with an ⓘ button that
+lists every location, matched first, and any notes; orange is kept for a check that did not
+finish. The same text is at the top of the proof report, which is now saved as soon as a
 check finishes — you don't have to delete to get it. If a folder was archived from a different
 storage, add that storage's mapping in Settings: its P5 side is tried as another location, and
 only for files not already found.

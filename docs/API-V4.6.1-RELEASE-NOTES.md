@@ -1,4 +1,4 @@
-# P5 Archive Manager API 4.6.1 (build 88) — Archived from several storages, tapes you can't read, and big folders
+# P5 Archive Manager API 4.6.1 (build 89) — Archived from several storages, tapes you can't read, and big folders
 
 **Status:** pre-release beta · **Date:** 2026-11-23
 
@@ -12,8 +12,10 @@ picture.
   or project folder to a mapping. Add one path mapping per storage in Settings ▸ Sources.
 - Only the files still unaccounted for are asked about at each further location, and the
   numbers on screen only go up while it works.
-- **Check Details ▸ How this was determined** lists every mapping rule and every P5 location
-  tried, with what it gave. Each file records the P5 folder it was found in, and the proof
+- **Check Details ▸ How this was determined** opens with how many files matched and where —
+  each matched location led by its count — then the places that held nothing, then every
+  mapping rule. The main window shows one grey line ("Matched at /… (1735)") with an ⓘ button
+  for every location and any notes, instead of orange note text. Each file records the P5 folder it was found in, and the proof
   report carries it.
 - Settings ▸ Archiving has one control per server for which indexes are searched: this index
   only, all indexes, or only the ones you choose. The last-resort search has a time limit.
@@ -75,6 +77,7 @@ LTO generation, for each server.
   Check Folder (via Restore Search) (build 86).
 - The ✕ beside the dropped folder now clears the previous folder's results too, not just the path
   (build 87).
+- Check ▸ File provenance's All / Not archived / On unreadable tape filter no longer shrinks "All" to a sliver (build 89).
 - A check that loses P5 part-way no longer starts from nothing: slow or dropped requests are retried, a slowing server is eased off, and if P5 still cannot be reached **Resume Check** reads only the folders not yet read (kept for 30 minutes) (build 88).
 - The Delete sheet no longer turns back into the empty Type-DELETE sheet while the folder is re-checked after a delete or an archive (build 88).
 - Check ▸ File provenance rows are no longer clipped on the left; the details wrap to the window (build 88).
@@ -108,3 +111,6 @@ The 4.6.0 builds were never released; everything since 4.5.0 ships in 4.6.1.
 9. Interrupt P5 part-way through a big check (or wait for a timeout): the window should say P5 is slow and retry, and if it
    still fails offer Resume Check, which reads only the folders not yet read.
 10. After a delete, the sheet should stay on "Re-checking the folder…" until the re-check ends.
+11. Open Check Details ▸ How this was determined: it should open with "N of N files matched in P5" and the matched
+    locations, with the places that held nothing in a collapsed group below. Open File provenance and confirm
+    the All / Not archived / On unreadable tape filter shows all three choices.
