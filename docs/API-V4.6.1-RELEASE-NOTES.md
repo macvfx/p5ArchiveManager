@@ -1,4 +1,4 @@
-# P5 Archive Manager API 4.6.1 (build 85) — Archived from several storages, tapes you can't read, and big folders
+# P5 Archive Manager API 4.6.1 (build 87) — Archived from several storages, tapes you can't read, and big folders
 
 **Status:** pre-release beta · **Date:** 2026-11-23
 
@@ -68,6 +68,15 @@ LTO generation, for each server.
 - Deleting files from an SMB share no longer freezes the app. The delete ran on the main thread, so
   every file check and removal on the network share stalled the window; it now runs in the
   background and the progress counter keeps updating (build 85).
+- The Delete sheet shows what is happening after you confirm: the stage, a progress bar, files
+  removed and space freed so far, elapsed time and an estimate of the time left (build 86).
+- Other waits on a network share no longer freeze the window: the receipts mirror folder's
+  reachable check and copies, stub clean-up after a restore, Restore from Project File, and
+  Check Folder (via Restore Search) (build 86).
+- The ✕ beside the dropped folder now clears the previous folder's results too, not just the path
+  (build 87).
+- **Clear** button beside Check Archive Status resets the folder and every result; during a check
+  it becomes **Stop & Clear** (build 87).
 - After you archive or delete, the automatic re-check now uses the full multi-storage check.
   Before, it looked only at the first path and the numbers fell sharply.
 - "Could not connect" now says why. If macOS is blocking local network access, there is a
@@ -90,3 +99,6 @@ The 4.6.0 builds were never released; everything since 4.5.0 ships in 4.6.1.
    counted and not deleted.
 6. Delete archived files from a folder on an SMB share. The window should stay responsive and the
    "Deleting n of N" counter should keep climbing.
+7. Confirm a delete and watch the sheet: it should name each stage, show the progress bar and time left.
+8. After a check, press Clear (or the ✕ beside the folder): the status and counts should reset. During a check,
+   press Stop & Clear and confirm the old result does not come back.
