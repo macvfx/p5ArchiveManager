@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.6.2 build 95 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.6.2 build 97 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -697,6 +697,7 @@ to see the index with your own eyes:
   check keeps its listings for 30 minutes and resumes where it stopped.
 - **Delete progress and Clear (4.6.2)** — live stage, bar, space freed and time left; Delete off the main
   thread; Clear / Stop & Clear resets the window.
+- **Delete names its symlinks (4.6.2)** — "N files, M of them symlinks (pointers only)".
 - **Size matching that follows P5 (4.6.2)** — P5's per-file overhead is expected; symlinks match P5
   links; exact bytes and the difference are shown.
 - **Archived from several storages (4.6.1)** — a partial match is completed from every other

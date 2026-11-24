@@ -1,4 +1,4 @@
-# P5 Archive Manager API 4.6.2 (build 95) — A check that survives a slow P5, a Delete that shows progress, and size matching that follows P5
+# P5 Archive Manager API 4.6.2 (build 97) — A check that survives a slow P5, a Delete that shows progress, and size matching that follows P5
 
 **Status:** pre-release beta · **Date:** 2026-11-23
 
@@ -63,6 +63,10 @@ and a small positive difference is **normal and expected**, including +245 B on 
 
 ### Smaller changes
 
+- **The Delete count names the symlinks.** A folder of symlinks (an FCP library, say) reads "571 files, all
+  symlinks (pointers only)" rather than hundreds of near-empty "files": P5 holds each as a Link entry, and a
+  symlink's size on disk is only the length of its target path. Deleting one removes the pointer, never the
+  file it points to. The main button, the Delete sheet and the receipt all say so.
 - **Clear** beside *Check Archive Status* resets the folder, the P5 path and every result; during a check
   it becomes **Stop & Clear**. The ✕ in the drop area now clears the previous folder's results too, not just
   its path.
@@ -71,6 +75,9 @@ and a small positive difference is **normal and expected**, including +245 B on 
 
 ### Fixes
 
+- Right after a Delete removed everything, the re-check no longer searches other locations and the Restore
+  search engine for files that are not there; it says "Nothing is left in this folder on disk…" at once.
+- A symlink whose target is on an unmounted volume is no longer skipped as "missing" when deleting.
 - The Delete sheet no longer turns back into the empty Type-DELETE sheet while the folder is re-checked
   after a delete or an archive.
 - The Archive button could open as a tiny blank square on the first click; the Archive and Delete sheets
