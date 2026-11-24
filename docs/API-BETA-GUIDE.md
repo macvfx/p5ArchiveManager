@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.6.1 build 91 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.6.2 build 95 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -285,6 +285,17 @@ check finishes — you don't have to delete to get it. If a folder was archived 
 storage, add that storage's mapping in Settings: its P5 side is tried as another location, and
 only for files not already found.
 
+**Path mappings and historical locations are two settings with two jobs.** A *path mapping* swaps the
+start of the dropped folder's local path for a P5 path, so the check asks about the right place
+**first**; if none matches, the dropped path is used as it is. *Historical archived locations* have
+no local side — they are only searched **afterwards**, when the first path finds nothing or only some
+of the files, trying the folder's path at several depths under each (and the P5 side of each mapping
+is tried then too). Both feed the same list shown in Check Details ▸ *How this was determined*:
+where files were matched first, then *Other places tried — none held these files*, which is not a
+failure — the files were found elsewhere. Neither needs the other: the historical list works with no
+mappings, and a mapping needs no historical location; a mapping simply makes the first guess right,
+so a check costs one request instead of probing around.
+
 **Handles (optional extra proof).** In Check Details, *Get handles & extra proof* asks P5 for
 each archived file's entry handle and what P5 holds for it — instances, archive times, tapes
 and barcodes. It adds a request or two per file, so it is on request (or switch on *Always get
@@ -337,7 +348,7 @@ and the files it did not get to are shown as not checked — never as not archiv
 saying so. Stop works at any time. Progress shows elapsed time and, once it has enough to go on,
 an estimate of the time left.
 
-#### Slow or lost connection — retry and Resume (4.6.1)
+#### Slow or lost connection — retry and Resume (4.6.2)
 
 A big folder takes hundreds of requests, so a P5 server that gets busy part-way can start
 answering slowly and then time out. The check copes in three steps:
@@ -682,6 +693,12 @@ to see the index with your own eyes:
 ## 4. Feature list (working)
 
 - **Multi-server** manager in Settings (⌘,); per-server Keychain password; Test Connection.
+- **Retry and Resume Check (4.6.2)** — slow or dropped reads are retried with back-off; an interrupted
+  check keeps its listings for 30 minutes and resumes where it stopped.
+- **Delete progress and Clear (4.6.2)** — live stage, bar, space freed and time left; Delete off the main
+  thread; Clear / Stop & Clear resets the window.
+- **Size matching that follows P5 (4.6.2)** — P5's per-file overhead is expected; symlinks match P5
+  links; exact bytes and the difference are shown.
 - **Archived from several storages (4.6.1)** — a partial match is completed from every other
   mapped storage and historical location; *How this was determined* shows each step.
 - **Tapes you can no longer read (4.6.1)** — per-server LTO generations whose files are not

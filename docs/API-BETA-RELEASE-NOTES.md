@@ -15,17 +15,20 @@ files, and archive the rest.
 
 ---
 
-## 🆕 v4.6.1 build 91 — Archived from several storages; tapes you can't read; big folders
+## 🆕 v4.6.2 build 95 — A check that survives a slow P5; Delete that shows progress; sizes that follow P5
+
+A check that loses P5 part-way no longer throws its results away: slow requests are retried with back-off, a struggling server is eased off, and **Resume Check** reads only the folders not yet read (listings are kept for 30 minutes; Start Over reads everything again). Deleting from an SMB share no longer freezes the window, and the Delete sheet shows live progress (stage, bar, space freed, time left) and closes cleanly. Size matching follows how P5 reports sizes: P5 lists each file a few hundred bytes larger than on disk (its own per-file overhead, observed 178–710 bytes, normal), so a file matches when P5's size is equal or larger by up to 4,096 bytes; a file larger on disk than in P5, or a bigger gap, is a mismatch. A symlink matches a P5 link entry and rows show exact byte counts. Check Details ▸ How this was determined opens with how many files matched and where; the main window shows one grey "Matched at…" line with an info button. A Clear button (Stop & Clear during a check) resets the window. A folder dropped from under a symlinked location no longer reads as entirely "not archived". Full **[4.6.2 release notes](API-V4.6.2-RELEASE-NOTES.md)**.
+
+---
+
+## v4.6.1 build 84 — Archived from several storages; tapes you can't read; big folders
 
 A folder archived from several storages is now found whole: each storage's root is swapped in with
 the rest of the path kept, and **How this was determined** lists every location tried. **Tapes you
 can no longer read** (Settings ▸ Archiving, per server) are not counted as archived, never deleted,
 and are offered to Archive again. The entry-handles window groups what P5 did not confirm by reason,
 with a next step and a retry. Check Details is a window per part, folders of 26,000 files or more are
-no longer cut off, and known temporary files can optionally be ignored. Builds 85–91: deleting from an SMB
-share no longer freezes the window, the Delete sheet shows live progress (stage, bar, space freed, time
-left), other network-share waits no longer block the app, and a Clear button (Stop & Clear during a check)
-resets the folder and its results. A check that loses P5 part-way retries slow requests, eases off a slowing server, and offers **Resume Check**, which reads only the folders not yet read. The Delete sheet no longer reverts to the confirmation prompt during the re-check, and File provenance rows and filter are no longer clipped. Check Details ▸ How this was determined now opens with how many files matched and where, with the empty locations collapsed below, and the main window shows one grey "Matched at…" line with an info button instead of orange notes. Size matching now follows how P5 reports sizes: P5 lists each file a few hundred bytes larger than on disk (its own per-file overhead — normal, observed 178–710 bytes), so a file matches when P5's size is equal or larger by up to 4,096 bytes; a file larger on disk than in P5, or a bigger gap, is a mismatch. A symlink matches a P5 link entry, and rows show exact byte counts. The Archive sheet always draws and the not-archived list never shows a count above an empty list. Full
+no longer cut off, and known temporary files can optionally be ignored. Full
 **[4.6.1 release notes](API-V4.6.1-RELEASE-NOTES.md)**.
 
 ---
