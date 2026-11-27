@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.6.4 build 100 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.6.5 build 101 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -301,7 +301,10 @@ each archived file's entry handle and what P5 holds for it — instances, archiv
 and barcodes. It adds a request or two per file, so it is on request (or switch on *Always get
 handles after a check* here or in Settings ▸ Archiving ▸ Extra proof). A handle is shown only when P5 itself confirms it; with a TSV
 inventory folder set in Settings you get the handle P5 minted at archive time. Run it before
-you delete: the deletion receipt includes the handle only if it was fetched first.
+you delete: the deletion receipt includes the handle only if it was fetched first. While it runs, the window shows the time
+elapsed, which counts up, and an estimate of the time left, worked out again from the pace so far,
+so it can rise if P5 slows down. Files only on unreadable tape are looked up too: a handle lists
+every copy, which is how a readable copy elsewhere frees them.
 
 **When handles are short.** Once a handles run finishes, Check Details ▸ Extra proof — entry handles
 keeps the result and the time it took, and lists any archived files P5 did not confirm a handle for,
@@ -322,8 +325,11 @@ count as readable. The basic check only knows the one volume the listing names, 
 a file with a readable second copy is freed. Changing the setting re-judges the current result at once,
 without asking P5 anything. The proof CSV has a *Not Counted (unreadable media)* column.
 
-These files join the **Archive** action: the blue button counts them with the files not in P5, the orange
-box has *Archive them again…*, and the archive sheet has a checkbox (on by default) to include them. The
+These files are **already in the archive total**: *Needs archiving* and the blue **Archive** button count
+them with the files not in P5, so there is nothing to add, and the archive sheet has a checkbox (on by
+default) to include them. *Archive only these N…* in the orange box opens the sheet for just these files,
+leaving the not-archived ones for the blue button. The *Done* line above the tiles counts them apart:
+*730 of 4212 archived · 880 only on unreadable tape* (from 4.6.5; earlier it counted them as archived). The
 old copies stay in P5. The **Delete** sheet lists them as not deleted. After archiving, run *Check Entry
 handles* so the new copy on a readable tape frees them — the basic check only sees one tape per file.
 
@@ -491,7 +497,8 @@ receipt.**
 - **Files only on unreadable tapes (4.6.1).** When a server has LTO generations ticked as
   unreadable (Settings ▸ Archiving), files whose only copy is on one are counted in the button
   and the sheet shows a checkbox, on by default, to archive them again. Untick it to archive only
-  the files not in P5. The Delete path never includes them. After archiving, the automatic
+  the files not in P5. **Archive only these N…** in the orange box (4.6.5) opens the sheet for just
+  these files. The Delete path never includes them. After archiving, the automatic
   re-check is the full check, with every mapped storage and historical location.
 - **Filenames with emoji or other characters outside the Unicode Basic Multilingual
   Plane (4.3.3) can't be archived through P5's REST connection at all** — a confirmed
@@ -885,7 +892,10 @@ the app keeps a detailed log you can send for diagnosis.
    name gets the same token everywhere, so the structure still reads), and so do index, pool,
    server, user and host names, IP and email addresses, and quoted values. Kept: timestamps,
    HTTP codes, sizes, timings, plan and job numbers, extensions, and a mark on any name with a
-   character P5 is known to mishandle (`{+}`, `{trail-sp}` …). The originals are not changed.
+   character P5 is known to mishandle (`{+}`, `{trail-sp}` …). Paths printed relative to the
+   checked folder and the encoded path inside a P5 handle (`Index#…` becomes `Index#K-…`) are
+   replaced too (from 4.6.5: earlier exports left them, so export again before sending).
+   The originals are not changed.
 4. **Review.** The window lists the words still in the logs that are neither ordinary English
    nor the app's own vocabulary. If one is a client, project, person or place name, type it in
    and choose **Add and Run Again**.

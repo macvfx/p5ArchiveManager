@@ -15,7 +15,13 @@ files, and archive the rest.
 
 ---
 
-## 🆕 v4.6.4 build 100 — Delete waits for a running archive job and for Deep verify
+## 🆕 v4.6.5 build 101 — The anonymized log export leaves no names behind; unreadable-tape files explained
+
+The first real anonymized log export, from 4.6.4, still had folder and file names in some lines: paths printed relative to the checked folder (the entry handle lines, ignored temporary files, files left out for a non-BMP name, stub restores), the path encoded inside a P5 handle (`Index#…`), and everything after two spaces in a row inside a name. All are replaced now; **if you exported logs with 4.6.3 or 4.6.4, export them again before sending.** Files only on unreadable tape: the *Done* line no longer counts them as archived, the orange box says they are already in the archive total, and **Archive only these N…** sends just those files. Full **[4.6.5 release notes](API-V4.6.5-RELEASE-NOTES.md)**.
+
+---
+
+## v4.6.4 build 100 — Delete waits for a running archive job and for Deep verify
 
 P5 lists an archived file as soon as it is written, so the check could offer Delete while the archive job was still running its post-archive steps, such as preview generation, which read the original files. The Delete sheet now asks P5 about the archive jobs this app started for the folder and, while one is running, names it and keeps Delete disabled (**Check Again**, or **Delete anyway**). After archiving, the status names the jobs still running. A Deep verify started from the Delete sheet now shows its progress, **Stop Deep Verify** and its result, Delete waits for it, and a check can no longer run alongside a Deep verify. Full **[4.6.4 release notes](API-V4.6.4-RELEASE-NOTES.md)**.
 
