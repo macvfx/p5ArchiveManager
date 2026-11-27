@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.6.5 build 101 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.6.6 build 102 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -531,9 +531,14 @@ receipt.**
 - **Client/path:** files are submitted as the **selected client** sees them. Pick the
   client that actually mounts the volume (e.g. `media-server`/`studio-mac` for
   `/Volumes/SharedSMB`; `localhost` for paths on the P5 server).
-- **One-shot + auto re-check:** like Delete, the Archive button **disables after running**
-  and the app **re-checks the folder** so newly-archived files move into the archived
-  count. Note: P5 indexing can lag job completion — if a re-check still shows files as
+- **One-shot + auto re-check:** like Delete, the Archive button **disables after running**.
+  When every job has finished within the half-minute the app watches, it **re-checks the folder**
+  so newly-archived files move into the archived count. While a job is still running the sheet
+  stays open as **Archive submitted**, with the jobs, their report and a **Close** button, and the
+  folder is **not** re-checked (4.6.6): P5 lists files as it writes them, so a re-check mid-job
+  showed the rest as not archived and offered them again. Check the folder again when P5's job
+  monitor shows the jobs finished. Until then the Archive sheet, like Delete, warns *Archive job
+  still running* and holds Archive (**Archive anyway** overrides). Note: P5 indexing can lag job completion — if a re-check still shows files as
   not-archived, the job is likely still finishing; re-check again a moment later.
 
 ### Deep verify (paranoid)

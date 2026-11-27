@@ -15,7 +15,13 @@ files, and archive the rest.
 
 ---
 
-## 🆕 v4.6.5 build 101 — The anonymized log export leaves no names behind; unreadable-tape files explained
+## 🆕 v4.6.6 build 102 — The Archive sheet waits for its jobs
+
+After submitting, the Archive sheet re-checked the folder while P5 was still writing to tape, and then reset to an empty form asking for a plan and client again. While the jobs are still running, the sheet now stays open as *Archive submitted*, with the jobs, their report and **Close**, and the folder is not re-checked; check it again when P5's job monitor shows the jobs finished. When the jobs finish within the half-minute the app watches, it re-checks as before. The Archive sheet also warns when an earlier archive job for the folder is still running and holds Archive until it ends (**Archive anyway** overrides), as Delete does. Full **[4.6.6 release notes](API-V4.6.6-RELEASE-NOTES.md)**.
+
+---
+
+## v4.6.5 build 101 — The anonymized log export leaves no names behind; unreadable-tape files explained
 
 The first real anonymized log export, from 4.6.4, still had folder and file names in some lines: paths printed relative to the checked folder (the entry handle lines, ignored temporary files, files left out for a non-BMP name, stub restores), the path encoded inside a P5 handle (`Index#…`), and everything after two spaces in a row inside a name. All are replaced now; **if you exported logs with 4.6.3 or 4.6.4, export them again before sending.** Files only on unreadable tape: the *Done* line no longer counts them as archived, the orange box says they are already in the archive total, and **Archive only these N…** sends just those files. Full **[4.6.5 release notes](API-V4.6.5-RELEASE-NOTES.md)**.
 
