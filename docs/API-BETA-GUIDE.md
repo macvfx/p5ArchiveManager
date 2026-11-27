@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.6.3 build 99 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.6.4 build 100 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -421,11 +421,24 @@ files. Clicking it does **not** delete immediately — it opens a confirmation s
 confirm) so deletion is always a deliberate step:
 
 1. **Deep verify entire P5 folder** — run a full scan to double-check before
-   committing (see Deep verify below).
+   committing (see Deep verify below). From 4.6.4 the sheet shows its progress, with
+   **Stop Deep Verify**, and **Delete waits for it** — the button reads *Waiting for Deep
+   Verify…*. When it finishes, the sheet says how many of the files to delete it found in P5
+   under the folder. Fewer than all is not an error when the check matched some files at
+   another location or index; Check Details shows where.
 2. **Open receipts folder** — review past deletion receipts.
 3. **Type DELETE** to enable the delete button, then confirm — the irreversible
    action (red).
 4. **Cancel.**
+
+**An archive job still running (4.6.4).** When the sheet opens it asks P5 about the archive
+jobs this app started for the folder. P5 lists a file once it is written, so the check already
+proves the files archived, but the job keeps going after that: post-archive steps such as
+preview generation read the original files on disk. While P5 reports such a job as running, the
+sheet shows **ARCHIVE JOB STILL RUNNING** with the job numbers, and Delete stays disabled. Use
+**Check Again** once P5's job monitor shows the job finished, or tick **Delete anyway**. A job
+whose state P5 cannot report is mentioned but does not hold Delete up, and jobs started outside
+this app (from P5 itself or another Mac) are not known to it.
 
 **Proof BEFORE delete.** A **proof report is written before anything is deleted** — both
 a **CSV** and a human-readable **TXT** listing every file with its disk size/dates vs P5
@@ -458,7 +471,10 @@ receipt.**
   Delete — the same weight, blue instead of red.
 - Clicking it opens a confirmation sheet (mirroring Delete's own): **Load archive
   plans & clients**, pick a **Plan** + **Client**, then **Archive N Files**.
-- Submits them to P5 and monitors the job briefly.
+- Submits them to P5 and monitors the job briefly, about half a minute. A job that is still
+  running after that is named in the status (4.6.4): writing to tape and post-archive steps such
+  as previews take longer, and P5's job monitor shows when it finishes. The automatic re-check
+  shows which files P5 already holds; Delete waits for the job.
 - **Large archives go in parts (4.6.3).** P5's web server refuses a request bigger than about
   1 MB: it answers at once with HTTP 500 "Server Error", and the app showed *Archive submit
   failed*. Every file's full path goes into the request, and source-path tagging sends it

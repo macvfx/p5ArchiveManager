@@ -15,7 +15,13 @@ files, and archive the rest.
 
 ---
 
-## 🆕 v4.6.3 build 99 — Large archives sent in parts; logs for support, anonymized
+## 🆕 v4.6.4 build 100 — Delete waits for a running archive job and for Deep verify
+
+P5 lists an archived file as soon as it is written, so the check could offer Delete while the archive job was still running its post-archive steps, such as preview generation, which read the original files. The Delete sheet now asks P5 about the archive jobs this app started for the folder and, while one is running, names it and keeps Delete disabled (**Check Again**, or **Delete anyway**). After archiving, the status names the jobs still running. A Deep verify started from the Delete sheet now shows its progress, **Stop Deep Verify** and its result, Delete waits for it, and a check can no longer run alongside a Deep verify. Full **[4.6.4 release notes](API-V4.6.4-RELEASE-NOTES.md)**.
+
+---
+
+## v4.6.3 build 99 — Large archives sent in parts; logs for support, anonymized
 
 Archiving a folder of a few thousand files failed at once with *Archive submit failed*: P5's web server refuses a request over about 1 MB, and the whole file list went in one request, with each path sent twice when source-path tagging is on (6,933 files came to 4.2 MB). The Archive sheet now sizes the request and, when it is over **Largest request** (Settings ▸ Archiving, 800 KB), sends it in parts, each its own P5 job with its own receipt; a refused part stops the run and keeps the jobs already started. **Tools ▸ Export Anonymized Logs for Support…** replaces folder and file names, server, index, pool, user and host names, and addresses with tokens before anything leaves the Mac, can add the P5 server's own system and access logs for the days of your sessions, lists any word left that might be a name, and keeps the token map on your Mac. Full **[4.6.3 release notes](API-V4.6.3-RELEASE-NOTES.md)**.
 
