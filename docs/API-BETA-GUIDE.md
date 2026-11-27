@@ -1,6 +1,6 @@
 # P5 Archive Manager API · User Guide
 
-**v4.6.2 build 97 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
+**v4.6.3 build 99 — pre-release beta.** Talks to the **Archiware P5 REST API v8**
 (no `nsdchat`). It is separately installed from P5 Archive Manager CLI 3.x and has
 different settings, workflow, and behaviour. The API app is the primary development
 focus; both applications can remain installed while it is evaluated.
@@ -459,6 +459,19 @@ receipt.**
 - Clicking it opens a confirmation sheet (mirroring Delete's own): **Load archive
   plans & clients**, pick a **Plan** + **Client**, then **Archive N Files**.
 - Submits them to P5 and monitors the job briefly.
+- **Large archives go in parts (4.6.3).** P5's web server refuses a request bigger than about
+  1 MB: it answers at once with HTTP 500 "Server Error", and the app showed *Archive submit
+  failed*. Every file's full path goes into the request, and source-path tagging sends it
+  twice, so a folder of a few thousand files is over the limit. When the request would be
+  larger than **Largest request** (Settings ▸ Archiving, 800 KB by default), the sheet shows
+  **REQUEST SIZE** with a checkbox, *Send in N parts*, ticked by default. It is the same
+  switch as **Split large archives into several P5 jobs** in Settings. Each part is its own P5
+  job, titled *… part 2 of 6: 1,150 files*, with its own receipt, and the window follows all
+  of them. If P5 refuses a part, the app stops there: the parts already accepted keep running
+  and nothing more is sent. The status names the jobs that started, so after they finish you
+  can check the folder again and archive what is left. Untick the box to send one request; the
+  sheet then warns that P5 will probably refuse it. Raise **Largest request** only if your P5
+  server has been set to accept larger requests.
 - **Files only on unreadable tapes (4.6.1).** When a server has LTO generations ticked as
   unreadable (Settings ▸ Archiving), files whose only copy is on one are counted in the button
   and the sheet shows a checkbox, on by default, to archive them again. Untick it to archive only
@@ -477,7 +490,9 @@ receipt.**
   also records its **full original path** in the P5 index's per-file `description` metadata,
   so the archive is **searchable by source path** and the origin shows on the entry. Only
   applied when the plan's index has a `description` key (a P5 default), so it never blocks
-  archiving. Turn it off if you don't want the app writing metadata into your index.
+  archiving. It sends each path twice, doubling the size of the archive request; large archives
+  are sent in parts (4.6.3, above), so that is not a reason to turn it off. Turn it off if you
+  don't want the app writing metadata into your index.
 - **Plans that delete at the source (updated in 4.1):** a P5 archive plan can clean up
   after a successful job in two separate ways — remove the archived **files**, or remove
   the **files and their folders**. Either one marks the plan **"⚠ deletes files"** or
@@ -766,7 +781,9 @@ to see the index with your own eyes:
   the Browse inspector can also navigate into backslash folders.)*
 - **Session logs & diagnostics** — every API call, archive job step and error is written
   to a per-launch log; verbose on by default (Settings ▸ Diagnostics & Logs).
-  **Tools ▸ Zip Logs to Desktop** bundles them for support (see **§6 Troubleshooting**).
+  **Tools ▸ Export Anonymized Logs for Support…** (4.6.3) bundles them for support with folder
+  and file names replaced (see **§6 Troubleshooting**); **Zip Logs to Desktop (Not Anonymized)**
+  keeps them as written, for your own use.
 
 ---
 
@@ -797,7 +814,8 @@ Please exercise these and report back (issues / what worked):
   configured one, turn on **Settings ▸ Archive index search ▸ Search all archive indexes**,
   then re-check.
 - **Logs capture the archive** — after an archive (especially one that misbehaves),
-  **Zip logs to Desktop** and confirm the `session-*.log` shows the submit, raw response,
+  export the logs (**Tools ▸ Export Anonymized Logs for Support…**) and confirm the session log
+  shows the submit, raw response,
   job ID and poll states (see **§6**).
 - **Edge cases** — multi-index (a file in a non-default index); size-mismatch handling on
   a re-saved `.drp`/`.drt`; symlinks.
@@ -836,9 +854,31 @@ If something doesn't work — most commonly **"I archived files but nothing happ
 the app keeps a detailed log you can send for diagnosis.
 
 1. **Reproduce the problem** (e.g. select the plan + client and run the archive again).
-2. **Tools ▸ Zip Logs to Desktop.** This bundles the session logs into
-   `P5ArchiveManager-logs-<date>.zip` on your Desktop and reveals it in Finder.
-3. **Email the zip** to support.
+2. **Tools ▸ Export Anonymized Logs for Support… (4.6.3).** The window lists what goes in:
+   - **This app's session logs**, all of them (the app keeps the last 20).
+   - **P5 server logs from this Mac**, when the app runs on the P5 server: P5's system log
+     (`/usr/local/aw/log/lexxsrv.log`) and its web server's access log
+     (`/usr/local/aw/servers/lexxsrv/modules/nslog/access.log`), which shows every request P5
+     received and what it answered. By default only the files covering the days of your app
+     sessions go in. Tick **Include all server log history** for a problem that built up over
+     weeks. No administrator password is needed.
+   - **Add Log Files…** for anything else, e.g. the server logs copied off another Mac when P5
+     runs elsewhere.
+   - **Names to replace**: client, project or company names that appear as plain text.
+3. **Anonymize.** Every folder and file name becomes a token such as `N-7KQ2M4.mov` (the same
+   name gets the same token everywhere, so the structure still reads), and so do index, pool,
+   server, user and host names, IP and email addresses, and quoted values. Kept: timestamps,
+   HTTP codes, sizes, timings, plan and job numbers, extensions, and a mark on any name with a
+   character P5 is known to mishandle (`{+}`, `{trail-sp}` …). The originals are not changed.
+4. **Review.** The window lists the words still in the logs that are neither ordinary English
+   nor the app's own vocabulary. If one is a client, project, person or place name, type it in
+   and choose **Add and Run Again**.
+5. **Save Zip…** and email the zip to support. The **token map** that turns tokens back into
+   names is saved on this Mac only, never in the zip. When support asks about a token, type it
+   under **Look up a token**.
+
+**Tools ▸ Zip Logs to Desktop (Not Anonymized)** still bundles the session logs exactly as
+written, for your own use.
 
 What's in the log:
 
@@ -859,6 +899,7 @@ Reveal Logs** opens the folder if you'd rather attach files yourself.
 
 - Receipts: `~/Library/Application Support/P5ArchiveManagerAPI/Receipts/`
 - Session logs: `~/Library/Application Support/P5ArchiveManagerAPI/Logs/` (one `session-*.log` per launch)
+- Token maps of anonymized log exports: `~/Library/Application Support/P5ArchiveManagerAPI/Log Exports/`
 - Volume cache / history: `~/Library/Application Support/P5ArchiveManagerAPI/`
 - Live Archiware P5 REST API docs: https://blog.archiware.com/redoc/p5_rest_api/awp5api.html
 

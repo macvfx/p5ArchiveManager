@@ -15,7 +15,13 @@ files, and archive the rest.
 
 ---
 
-## 🆕 v4.6.2 build 97 — A check that survives a slow P5; Delete that shows progress; sizes that follow P5
+## 🆕 v4.6.3 build 99 — Large archives sent in parts; logs for support, anonymized
+
+Archiving a folder of a few thousand files failed at once with *Archive submit failed*: P5's web server refuses a request over about 1 MB, and the whole file list went in one request, with each path sent twice when source-path tagging is on (6,933 files came to 4.2 MB). The Archive sheet now sizes the request and, when it is over **Largest request** (Settings ▸ Archiving, 800 KB), sends it in parts, each its own P5 job with its own receipt; a refused part stops the run and keeps the jobs already started. **Tools ▸ Export Anonymized Logs for Support…** replaces folder and file names, server, index, pool, user and host names, and addresses with tokens before anything leaves the Mac, can add the P5 server's own system and access logs for the days of your sessions, lists any word left that might be a name, and keeps the token map on your Mac. Full **[4.6.3 release notes](API-V4.6.3-RELEASE-NOTES.md)**.
+
+---
+
+## v4.6.2 build 97 — A check that survives a slow P5; Delete that shows progress; sizes that follow P5
 
 A check that loses P5 part-way no longer throws its results away: slow requests are retried with back-off, a struggling server is eased off, and **Resume Check** reads only the folders not yet read (listings are kept for 30 minutes; Start Over reads everything again). Deleting from an SMB share no longer freezes the window, and the Delete sheet shows live progress (stage, bar, space freed, time left) and closes cleanly. Size matching follows how P5 reports sizes: P5 lists each file a few hundred bytes larger than on disk (its own per-file overhead, observed 178–710 bytes, normal), so a file matches when P5's size is equal or larger by up to 4,096 bytes; a file larger on disk than in P5, or a bigger gap, is a mismatch. A symlink matches a P5 link entry and rows show exact byte counts. Check Details ▸ How this was determined opens with how many files matched and where; the main window shows one grey "Matched at…" line with an info button. A Clear button (Stop & Clear during a check) resets the window. The Delete count says how many of the files are symlinks (pointers only), a folder emptied by Delete re-checks as empty at once, and a symlink to offline media is no longer skipped. A folder dropped from under a symlinked location no longer reads as entirely "not archived". Full **[4.6.2 release notes](API-V4.6.2-RELEASE-NOTES.md)**.
 
